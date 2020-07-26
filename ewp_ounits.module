@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Contains ewp_ounits.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function ewp_ounits_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the ewp_ounits module.
+    case 'help.page.ewp_ounits':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Drupal implementation of the EWP Organizational Units API') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function ewp_ounits_theme() {
+  return [
+    'ewp_ounits' => [
+      'render element' => 'children',
+    ],
+  ];
+}

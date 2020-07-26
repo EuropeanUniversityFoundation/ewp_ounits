@@ -1,0 +1,20 @@
+add organizational unit entities:
+  title: 'Create new Organizational Unit entities'
+
+administer organizational unit entities:
+  title: 'Administer Organizational Unit entities'
+  description: 'Allow to access the administration form to configure Organizational Unit entities.'
+  restrict access: true
+
+delete organizational unit entities:
+  title: 'Delete Organizational Unit entities'
+
+edit organizational unit entities:
+  title: 'Edit Organizational Unit entities'
+
+view published organizational unit entities:
+  title: 'View published Organizational Unit entities'
+
+view unpublished organizational unit entities:
+  title: 'View unpublished Organizational Unit entities'
+

@@ -1,0 +1,11 @@
+name: 'EWP OUnits'
+type: module
+description: 'Drupal implementation of the EWP Organizational Units API'
+core: 8.x
+package: 'EWP'
+dependencies:
+  - ewp_core:ewp_core
+  - ewp_flexible_address:ewp_flexible_address
+  - ewp_phone_number:ewp_phone_number
+  - ewp_contact:ewp_contact
+  - ewp_institutions:ewp_institutions

@@ -1,0 +1,6 @@
+entity.ounit.add_form:
+  route_name: entity.ounit.add_form
+  title: 'Add Organizational Unit'
+  appears_on:
+    - ounit.settings
+    - entity.ounit.collection

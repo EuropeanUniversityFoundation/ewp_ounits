@@ -1,0 +1,21 @@
+# Organizational Unit routing definition
+ounit.settings_tab:
+  route_name: ounit.settings
+  title: 'Settings'
+  base_route: ounit.settings
+
+entity.ounit.canonical:
+  route_name: entity.ounit.canonical
+  base_route: entity.ounit.canonical
+  title: 'View'
+
+entity.ounit.edit_form:
+  route_name: entity.ounit.edit_form
+  base_route: entity.ounit.canonical
+  title: 'Edit'
+
+entity.ounit.delete_form:
+  route_name:  entity.ounit.delete_form
+  base_route:  entity.ounit.canonical
+  title: Delete
+  weight: 10

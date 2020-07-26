@@ -1,0 +1,49 @@
+# EWP Organizational Units menu parent
+ewp_ounits.admin:
+  title: 'EWP Organizational Units'
+  route_name: ewp_ounits.admin
+  description: 'Settings for EWP Organizational Units'
+  parent: ewp_core.admin
+
+# Organizational Units menu items definition
+ounit.add_form:
+  title: 'Add Organizational Unit'
+  route_name: entity.ounit.add_form
+  description: 'Add a new Organizational Unit entity'
+  parent: ewp_ounits.admin
+  weight: -10
+
+ounit.settings:
+  title: 'Organizational Unit settings'
+  description: 'Configure Organizational Unit entities'
+  route_name: ounit.settings
+  parent: ewp_ounits.admin
+  weight: 1
+
+ounit.fields:
+  title: 'Manage fields'
+  description: 'Manage the fields of Organizational Unit entities'
+  route_name: entity.ounit.field_ui_fields
+  parent: ewp_ounits.admin
+  weight: 2
+
+ounit.form:
+  title: 'Manage form display'
+  description: 'Manage the form display of Organizational Unit entities'
+  route_name: entity.entity_form_display.ounit.default
+  parent: ewp_ounits.admin
+  weight: 3
+
+ounit.display:
+  title: 'Manage display'
+  description: 'Manage the display of Organizational Unit entities'
+  route_name: entity.entity_view_display.ounit.default
+  parent: ewp_ounits.admin
+  weight: 4
+
+ounit.collection:
+  title: 'Organizational Unit list'
+  route_name: entity.ounit.collection
+  description: 'List Organizational Unit entities'
+  parent: ewp_ounits.admin
+  weight: 10

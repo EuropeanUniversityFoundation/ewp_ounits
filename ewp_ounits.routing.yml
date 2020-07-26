@@ -1,0 +1,7 @@
+ewp_ounits.admin:
+  path: '/admin/ewp/ounit'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'EWP Organizational Units'
+  requirements:
+    _permission: 'administer ounit entities'
