@@ -6,6 +6,9 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Implements hook_help().
@@ -32,4 +35,30 @@ function ewp_ounits_theme() {
       'render element' => 'children',
     ],
   ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function ewp_ounits_theme_suggestions_org(array $variables) {
+  $suggestions = [];
+  $entity = $variables['elements']['#ounit'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'ounit__' . $sanitized_view_mode;
+  $suggestions[] = 'ounit__' . $entity->id();
+  $suggestions[] = 'ounit__' . $entity->id() . '__' . $sanitized_view_mode;
+  return $suggestions;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function ewp_ounits_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (in_array($form_id, ['ounit_add_form','ounit_edit_form'])) {
+    $entity = $form_state->getFormObject()->getEntity();
+    $uuid = $entity->get('uuid')->value;
+    $form['ounit_id']['widget'][0]['value']['#default_value'] = $uuid;
+    $form['ounit_id']['widget']['#disabled'] = TRUE;
+  }
 }
