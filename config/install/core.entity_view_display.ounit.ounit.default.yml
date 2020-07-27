@@ -16,7 +16,9 @@ dependencies:
     - field.field.ounit.ounit.website_url
   module:
     - ewp_core
+    - ewp_contact
     - ewp_flexible_address
+    - ewp_institutions
     - ewp_ounits
 id: ounit.ounit.default
 targetEntityType: ounit

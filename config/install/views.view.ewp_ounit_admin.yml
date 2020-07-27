@@ -17,7 +17,9 @@ dependencies:
     - system.menu.admin
   module:
     - ewp_core
+    - ewp_contact
     - ewp_flexible_address
+    - ewp_institutions
     - ewp_ounits
     - user
 id: ewp_ounit_admin
