@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - ewp_core
+    - ewp_ounits
+id: ounit.ounit_id
+field_name: ounit_id
+entity_type: ounit
+type: ascii_identifier
+settings:
+  max_length: '64'
+  is_ascii: true
+  case_sensitive: true
+module: ewp_core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
