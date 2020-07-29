@@ -1,5 +1,5 @@
 {
-  "name": "ewp_ounits",
+  "name": "euf/ewp_ounits",
   "type": "drupal-module",
   "description": "Drupal implementation of the EWP Organizational Units API",
   "keywords": [
