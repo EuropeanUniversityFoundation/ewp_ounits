@@ -4,4 +4,4 @@ ewp_ounits.admin:
     _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
     _title: 'EWP Organizational Units'
   requirements:
-    _permission: 'administer ounit entities'
+    _permission: 'administer organizational unit entities'
