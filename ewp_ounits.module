@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -34,6 +35,12 @@ function ewp_ounits_theme() {
     'ewp_ounits' => [
       'render element' => 'children',
     ],
+    'ounit' => [                                // the entity id
+      'path' => $path . '/templates',         // template directory in module or theme
+      'template'  => 'ounit',                   // defines base template as /hei.html.twig
+      'render element' => 'elements',         // Theme API call to define the container of the entity in the render array
+                                              // The entity will be prefixed with a hash sign as ['elements']['#artwork']
+    ],
   ];
 }
 
@@ -49,6 +56,32 @@ function ewp_ounits_theme_suggestions_org(array $variables) {
   $suggestions[] = 'ounit__' . $entity->id();
   $suggestions[] = 'ounit__' . $entity->id() . '__' . $sanitized_view_mode;
   return $suggestions;
+}
+
+/**
+ * Prepares variables for Organizational Unit templates.
+ *
+ * Default template: ounit.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the user information and any
+ *   - attributes: HTML attributes for the containing element.
+ */
+function template_preprocess_ounit(array &$variables) {
+  // Helpful $content variable for templates.
+  $variables['content'] = [];
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+  /** @var ContactEntityInterface $entity */
+  $entity = $variables['elements']['#ounit'];
+  //provide the label
+  $variables['label'] = $entity->label();
+  //provide the alias
+  $variables['url'] = $entity->toUrl()->toString();
+  //provide the view mode
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
 }
 
 /**

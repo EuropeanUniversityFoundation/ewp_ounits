@@ -5,9 +5,14 @@
  *
  * This template is used when viewing Organizational Unit pages.
  *
- *
  * Available variables:
- * - content: A list of content items. Use 'content' to print all content, or
+ * - content: A list of content items. Use 'content' to print all content,
+ *   or print a subset such as {{ content.field_example }}. Use
+ *   {{ content|without('field_example') }} to temporarily suppress the printing
+ *   of a given child element.
+ * - label: the label of the entity.
+ * - url: Direct URL of the current entity.
+ * - view_mode: View mode; for example, "teaser" or "full".
  * - attributes: HTML attributes for the container element.
  *
  * @see template_preprocess_ounit()
@@ -15,7 +20,14 @@
  * @ingroup themeable
  */
 #}
-<div{{ attributes.addClass('ounit') }}>
+{%
+  set classes = [
+    'ounit',
+    view_mode ? 'ounit--view-mode-' ~ view_mode|clean_class,
+    'clearfix',
+  ]
+%}
+<div{{ attributes.addClass(classes) }}>
   {% if content %}
     {{- content -}}
   {% endif %}
