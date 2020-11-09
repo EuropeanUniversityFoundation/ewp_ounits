@@ -101,7 +101,7 @@ class Ounit extends ContentEntityBase implements OunitInterface {
       ->setLabel(t('Label'))
       ->setDescription(t('The internal label of the Organizational Unit entity.'))
       ->setSettings([
-        'max_length' => 50,
+        'max_length' => 255,
         'text_processing' => 0,
       ])
       ->setDefaultValue('')
