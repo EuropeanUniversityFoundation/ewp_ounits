@@ -32,7 +32,7 @@ function ewp_ounits_help($route_name, RouteMatchInterface $route_match) {
 /**
  * Implements hook_theme().
  */
-function ewp_ounits_theme() {
+function ewp_ounits_theme($existing, $type, $theme, $path) {
   return [
     'ewp_ounits' => [
       'render element' => 'children',
