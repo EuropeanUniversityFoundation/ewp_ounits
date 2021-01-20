@@ -39,7 +39,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'administer organizational unit entities'
+          perm: 'access organizational unit entities overview'
       cache:
         type: tag
         options: {  }

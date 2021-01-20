@@ -18,3 +18,6 @@ view published organizational unit entities:
 view unpublished organizational unit entities:
   title: 'View unpublished Organizational Unit entities'
 
+access organizational unit entities overview:
+  title: 'Access the Organizational Units overview page'
+  description: 'Should be combined with Access the Content overview page.'
