@@ -5,6 +5,9 @@ dependencies:
     - field.storage.ounit.parent_ounit
   module:
     - ewp_ounits
+  enforced:
+    module:
+      - ewp_ounits
 id: ounit.ounit.parent_ounit
 field_name: parent_ounit
 entity_type: ounit

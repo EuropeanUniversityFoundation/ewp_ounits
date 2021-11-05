@@ -22,6 +22,9 @@ dependencies:
     - ewp_institutions
     - ewp_ounits
     - user
+  enforced:
+    module:
+      - ewp_ounits
 id: ewp_ounit_admin
 label: 'EWP OUnit administration'
 module: views

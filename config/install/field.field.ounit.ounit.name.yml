@@ -6,6 +6,9 @@ dependencies:
   module:
     - ewp_core
     - ewp_ounits
+  enforced:
+    module:
+      - ewp_ounits
 id: ounit.ounit.name
 field_name: name
 entity_type: ounit

@@ -20,6 +20,9 @@ dependencies:
     - ewp_flexible_address
     - ewp_institutions
     - ewp_ounits
+  enforced:
+    module:
+      - ewp_ounits
 id: ounit.ounit.default
 targetEntityType: ounit
 bundle: ounit

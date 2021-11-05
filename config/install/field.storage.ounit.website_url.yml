@@ -4,6 +4,9 @@ dependencies:
   module:
     - ewp_core
     - ewp_ounits
+  enforced:
+    module:
+      - ewp_ounits
 id: ounit.website_url
 field_name: website_url
 entity_type: ounit

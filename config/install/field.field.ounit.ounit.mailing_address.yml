@@ -6,6 +6,9 @@ dependencies:
   module:
     - ewp_flexible_address
     - ewp_ounits
+  enforced:
+    module:
+      - ewp_ounits
 id: ounit.ounit.mailing_address
 field_name: mailing_address
 entity_type: ounit

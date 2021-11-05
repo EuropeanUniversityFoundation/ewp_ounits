@@ -4,6 +4,9 @@ dependencies:
   module:
     - ewp_institutions
     - ewp_ounits
+  enforced:
+    module:
+      - ewp_ounits
 id: ounit.parent_hei
 field_name: parent_hei
 entity_type: ounit

@@ -5,6 +5,9 @@ dependencies:
     - field.storage.ounit.abbreviation
   module:
     - ewp_ounits
+  enforced:
+    module:
+      - ewp_ounits
 id: ounit.ounit.abbreviation
 field_name: abbreviation
 entity_type: ounit

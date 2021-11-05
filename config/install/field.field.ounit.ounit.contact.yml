@@ -5,6 +5,9 @@ dependencies:
     - field.storage.ounit.contact
   module:
     - ewp_ounits
+  enforced:
+    module:
+      - ewp_ounits
 id: ounit.ounit.contact
 field_name: contact
 entity_type: ounit

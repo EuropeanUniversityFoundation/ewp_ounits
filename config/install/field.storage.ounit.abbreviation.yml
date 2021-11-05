@@ -3,6 +3,9 @@ status: true
 dependencies:
   module:
     - ewp_ounits
+  enforced:
+    module:
+      - ewp_ounits
 id: ounit.abbreviation
 field_name: abbreviation
 entity_type: ounit

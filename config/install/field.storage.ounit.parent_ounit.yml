@@ -3,6 +3,9 @@ status: true
 dependencies:
   module:
     - ewp_ounits
+  enforced:
+    module:
+      - ewp_ounits
 id: ounit.parent_ounit
 field_name: parent_ounit
 entity_type: ounit

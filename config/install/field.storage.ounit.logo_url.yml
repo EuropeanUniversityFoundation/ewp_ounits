@@ -4,6 +4,9 @@ dependencies:
   module:
     - ewp_core
     - ewp_ounits
+  enforced:
+    module:
+      - ewp_ounits
 id: ounit.logo_url
 field_name: logo_url
 entity_type: ounit
