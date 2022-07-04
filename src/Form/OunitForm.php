@@ -13,6 +13,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class OunitForm extends ContentEntityForm {
 
+  const OUNIT_ID = 'ounit_id';
+
   /**
    * The current user account.
    *
@@ -37,7 +39,29 @@ class OunitForm extends ContentEntityForm {
     /* @var \Drupal\ewp_ounits\Entity\Ounit $entity */
     $form = parent::buildForm($form, $form_state);
 
+    // Prepare changes to the ounit_id widget.
+    $ounit_id_value = $form[self::OUNIT_ID]['widget'][0]['value'];
+    // Remove the requirement from the form element.
+    $ounit_id_value['#required'] = FALSE;
+    // Set a placeholder indicating the UUID fallback.
+    $placeholder = $this->t('Leave empty to use UUID as OUnit ID');
+    $ounit_id_value['#attributes']['placeholder'] = $placeholder;
+    // Apply the changes to the widget.
+    $form[self::OUNIT_ID]['widget'][0]['value'] = $ounit_id_value;
+
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    if (empty($form_state->getValue(self::OUNIT_ID)[0]['value'])) {
+      $ounit_id_value = $this->entity->uuid->value;
+      $form_state->setValue([self::OUNIT_ID , 0 , 'value'], $ounit_id_value);
+    }
+
+    parent::validateForm($form, $form_state);
   }
 
   /**

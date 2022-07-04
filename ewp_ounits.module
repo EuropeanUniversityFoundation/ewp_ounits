@@ -87,18 +87,6 @@ function template_preprocess_ounit(array &$variables) {
 }
 
 /**
- * Implements hook_form_alter().
- */
-function ewp_ounits_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (in_array($form_id, ['ounit_add_form','ounit_edit_form'])) {
-    $entity = $form_state->getFormObject()->getEntity();
-    $uuid = $entity->get('uuid')->value;
-    $form['ounit_id']['widget'][0]['value']['#default_value'] = $uuid;
-    $form['ounit_id']['widget']['#disabled'] = TRUE;
-  }
-}
-
-/**
  * Implements hook_jsonapi_entity_filter_access() for 'ounit'.
  */
 function ewp_ounits_jsonapi_entity_filter_access(EntityTypeInterface $entity_type, AccountInterface $account) {
