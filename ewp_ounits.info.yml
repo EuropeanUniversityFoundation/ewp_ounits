@@ -1,7 +1,7 @@
 name: 'EWP OUnits'
 type: module
 description: 'Drupal implementation of the EWP Organizational Units API'
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8 || ^9 || ^10
 package: 'EWP'
 dependencies:
   - ewp_core:ewp_core

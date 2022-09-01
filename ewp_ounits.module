@@ -34,14 +34,10 @@ function ewp_ounits_help($route_name, RouteMatchInterface $route_match) {
  */
 function ewp_ounits_theme($existing, $type, $theme, $path) {
   return [
-    'ewp_ounits' => [
-      'render element' => 'children',
-    ],
-    'ounit' => [                              // the entity id
-      'path' => $path . '/templates',         // template directory in module or theme
-      'template'  => 'ounit',                 // defines base template as /ounit.html.twig
-      'render element' => 'elements',         // Theme API call to define the container of the entity in the render array
-                                              // The entity will be prefixed with a hash sign as ['elements']['#ounit']
+    'ounit' => [
+      'path' => $path . '/templates',
+      'template'  => 'ounit',
+      'render element' => 'elements',
     ],
   ];
 }

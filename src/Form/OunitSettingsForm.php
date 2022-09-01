@@ -46,7 +46,11 @@ class OunitSettingsForm extends FormBase {
    *   Form definition array.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['ounit_settings']['#markup'] = 'Settings form for Organizational Unit entities. Manage field settings here.';
+    $form['placeholder'] = [
+      '#type' => 'item',
+      '#markup' => $this->t('No settings currently available.'),
+    ];
+
     return $form;
   }
 

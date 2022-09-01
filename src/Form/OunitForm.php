@@ -74,17 +74,21 @@ class OunitForm extends ContentEntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        $this->messenger()->addMessage($this->t('Created the %label Organizational Unit.', [
-          '%label' => $entity->label(),
-        ]));
+        $this->messenger()
+          ->addMessage($this->t('Created the %label Organizational Unit.', [
+            '%label' => $entity->label(),
+          ]));
         break;
 
       default:
-        $this->messenger()->addMessage($this->t('Saved the %label Organizational Unit.', [
-          '%label' => $entity->label(),
-        ]));
+        $this->messenger()
+          ->addMessage($this->t('Saved the %label Organizational Unit.', [
+            '%label' => $entity->label(),
+          ]));
     }
-    $form_state->setRedirect('entity.ounit.canonical', ['ounit' => $entity->id()]);
+    $form_state->setRedirect('entity.ounit.canonical', [
+      'ounit' => $entity->id()
+    ]);
   }
 
 }
