@@ -43,7 +43,7 @@ class OunitListBuilder extends EntityListBuilder {
         : '';
     }
     else {
-      $row[self::PARENT_OUNIT] = $this->t(self::UNDEFINED);
+      $row[self::PARENT_OUNIT] = $this->t('%u', ['%u' => self::UNDEFINED]);
     }
     if ($entity->hasField(self::PARENT_HEI)) {
       $parent_hei = $entity->get(self::PARENT_HEI)->referencedEntities();
@@ -52,7 +52,7 @@ class OunitListBuilder extends EntityListBuilder {
         : '';
     }
     else {
-      $row[self::PARENT_HEI] = $this->t(self::UNDEFINED);
+      $row[self::PARENT_HEI] = $this->t('%u', ['%u' => self::UNDEFINED]);
     }
     return $row + parent::buildRow($entity);
   }
