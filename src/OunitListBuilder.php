@@ -13,12 +13,19 @@ use Drupal\Core\Link;
  */
 class OunitListBuilder extends EntityListBuilder {
 
+  const PARENT_HEI = 'parent_hei';
+  const PARENT_OUNIT = 'parent_ounit';
+
+  const UNDEFINED = 'This field is not defined.';
+
   /**
    * {@inheritdoc}
    */
   public function buildHeader() {
     $header['id'] = $this->t('Organizational Unit ID');
     $header['label'] = $this->t('Label');
+    $header[self::PARENT_OUNIT] = $this->t('Parent Organizational Unit');
+    $header[self::PARENT_HEI] = $this->t('Parent Institution');
     return $header + parent::buildHeader();
   }
 
@@ -28,11 +35,25 @@ class OunitListBuilder extends EntityListBuilder {
   public function buildRow(EntityInterface $entity) {
     /* @var \Drupal\ewp_ounits\Entity\Ounit $entity */
     $row['id'] = $entity->id();
-    $row['label'] = Link::createFromRoute(
-      $entity->label(),
-      'entity.ounit.edit_form',
-      ['ounit' => $entity->id()]
-    );
+    $row['label'] = $entity->toLink();
+    if ($entity->hasField(self::PARENT_OUNIT)) {
+      $parent_ounit = $entity->get(self::PARENT_OUNIT)->referencedEntities();
+      $row[self::PARENT_OUNIT] = (!empty($parent_ounit))
+        ? $parent_ounit[0]->toLink()
+        : '';
+    }
+    else {
+      $row[self::PARENT_OUNIT] = $this->t(self::UNDEFINED);
+    }
+    if ($entity->hasField(self::PARENT_HEI)) {
+      $parent_hei = $entity->get(self::PARENT_HEI)->referencedEntities();
+      $row[self::PARENT_HEI] = (!empty($parent_hei))
+        ? $parent_hei[0]->toLink()
+        : '';
+    }
+    else {
+      $row[self::PARENT_HEI] = $this->t(self::UNDEFINED);
+    }
     return $row + parent::buildRow($entity);
   }
 
