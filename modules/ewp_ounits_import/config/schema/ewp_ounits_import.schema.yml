@@ -1,0 +1,14 @@
+ewp_ounits_import.ounit_importer.*:
+  type: config_entity
+  label: Organizational Unit importer
+  mapping:
+    id:
+      type: string
+      label: ID
+    label:
+      type: label
+      label: Label
+    uuid:
+      type: string
+    description:
+      type: string

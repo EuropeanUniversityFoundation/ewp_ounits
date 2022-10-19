@@ -1,0 +1,5 @@
+entity.ounit_importer.add_form:
+  route_name: 'entity.ounit_importer.add_form'
+  title: 'Add Organizational Unit importer'
+  appears_on:
+    - entity.ounit_importer.collection

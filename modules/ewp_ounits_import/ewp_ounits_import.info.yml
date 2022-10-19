@@ -1,0 +1,5 @@
+name: 'EWP OUnits Import'
+type: module
+description: 'Provides an Organizational Unit importer configuration entity.'
+core_version_requirement: ^8 || ^9 || ^10
+package: 'EWP'
