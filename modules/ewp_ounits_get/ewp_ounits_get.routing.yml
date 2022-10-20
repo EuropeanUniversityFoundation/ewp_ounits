@@ -1,0 +1,39 @@
+ewp_ounits_get.admin:
+  path: '/admin/ewp/ounit/get'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'GET settings'
+  requirements:
+    _permission: 'administer ounit provider entities'
+
+entity.ounit_provider.collection:
+  path: '/admin/ewp/ounit/get/list'
+  defaults:
+    _entity_list: 'ounit_provider'
+    _title: 'Organizational Unit provider configuration'
+  requirements:
+    _permission: 'administer ounit provider entities'
+
+entity.ounit_provider.add_form:
+  path: '/admin/ewp/ounit/get/add'
+  defaults:
+    _entity_form: 'ounit_provider.add'
+    _title: 'Add an Organizational Unit provider'
+  requirements:
+    _permission: 'administer ounit provider entities'
+
+entity.ounit_provider.edit_form:
+  path: '/admin/ewp/ounit/get/{ounit_provider}'
+  defaults:
+    _entity_form: 'ounit_provider.edit'
+    _title: 'Edit Organizational Unit provider'
+  requirements:
+    _permission: 'administer ounit provider entities'
+
+entity.ounit_provider.delete_form:
+  path: '/admin/ewp/ounit/get/{ounit_provider}/delete'
+  defaults:
+    _entity_form: 'ounit_provider.delete'
+    _title: 'Delete Organizational Unit provider'
+  requirements:
+    _permission: 'administer ounit provider entities'

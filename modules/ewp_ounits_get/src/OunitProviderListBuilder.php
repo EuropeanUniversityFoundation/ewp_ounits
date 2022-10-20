@@ -1,14 +1,14 @@
 <?php
 
-namespace Drupal\ewp_ounits_import;
+namespace Drupal\ewp_ounits_get;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
 
 /**
- * Provides a listing of organizational unit importers.
+ * Provides a listing of Organizational Unit providers.
  */
-class OunitImporterListBuilder extends ConfigEntityListBuilder {
+class OunitProviderListBuilder extends ConfigEntityListBuilder {
 
   /**
    * {@inheritdoc}
@@ -16,6 +16,7 @@ class OunitImporterListBuilder extends ConfigEntityListBuilder {
   public function buildHeader() {
     $header['label'] = $this->t('Label');
     $header['id'] = $this->t('Machine name');
+    $header['hei_id'] = $this->t('Institution ID');
     $header['status'] = $this->t('Status');
     return $header + parent::buildHeader();
   }
@@ -24,10 +25,13 @@ class OunitImporterListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /** @var \Drupal\ewp_ounits_import\OunitImporterInterface $entity */
+    /** @var \Drupal\ewp_ounits_get\OunitProviderInterface $entity */
     $row['label'] = $entity->label();
     $row['id'] = $entity->id();
-    $row['status'] = $entity->status() ? $this->t('Enabled') : $this->t('Disabled');
+    $row['hei_id'] = $entity->heiId();
+    $row['status'] = $entity->status()
+      ? $this->t('Enabled')
+      : $this->t('Disabled');
     return $row + parent::buildRow($entity);
   }
 

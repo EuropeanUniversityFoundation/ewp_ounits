@@ -1,0 +1,15 @@
+# EWP OUnits GET menu parent.
+ewp_ounits_get.admin:
+  title: 'GET settings'
+  route_name: ewp_ounits_get.admin
+  description: 'Settings for EWP OUnits GET.'
+  parent: ewp_ounits.admin
+  weight: 5
+
+# Organizational Unit providers.
+entity.ounit_provider.overview:
+  title: 'Organizational Unit provider list'
+  parent: ewp_ounits_get.admin
+  description: 'List of Organizational Unit providers.'
+  route_name: entity.ounit_provider.collection
+  weight: 10

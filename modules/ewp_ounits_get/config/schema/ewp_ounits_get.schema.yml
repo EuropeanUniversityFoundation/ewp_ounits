@@ -1,0 +1,21 @@
+ewp_ounits_get.ounit_provider.*:
+  type: config_entity
+  label: Organizational Unit provider
+  mapping:
+    id:
+      type: string
+      label: ID
+    label:
+      type: label
+      label: Label
+    uuid:
+      type: string
+    hei_id:
+      type: string
+      label: 'Institution ID'
+    collection_url:
+      type: string
+      label: 'Resource collection URL'
+    description:
+      type: string
+      label: Description

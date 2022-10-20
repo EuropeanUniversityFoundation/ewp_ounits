@@ -1,0 +1,5 @@
+entity.ounit_provider.add_form:
+  route_name: 'entity.ounit_provider.add_form'
+  title: 'Add Organizational Unit provider'
+  appears_on:
+    - entity.ounit_provider.collection
