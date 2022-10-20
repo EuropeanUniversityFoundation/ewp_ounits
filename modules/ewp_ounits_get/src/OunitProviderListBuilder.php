@@ -35,4 +35,19 @@ class OunitProviderListBuilder extends ConfigEntityListBuilder {
     return $row + parent::buildRow($entity);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getDefaultOperations(EntityInterface $entity) {
+    $operations = parent::getDefaultOperations($entity) + [
+      'preview' => [
+        'title' => $this->t('Preview'),
+        'weight' => 0,
+        'url' => $entity->toUrl('preview-form'),
+      ],
+    ];
+
+    return $operations;
+  }
+
 }

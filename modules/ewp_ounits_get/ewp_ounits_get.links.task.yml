@@ -1,0 +1,17 @@
+entity.ounit_provider.preview_form:
+  route_name: entity.ounit_provider.preview_form
+  base_route: entity.ounit_provider.edit_form
+  title: 'Preview'
+  weight: 0
+
+entity.ounit_provider.edit_form:
+  route_name: entity.ounit_provider.edit_form
+  base_route: entity.ounit_provider.edit_form
+  title: 'Edit'
+  weight: 1
+
+entity.ounit_provider.delete_form:
+  route_name:  entity.ounit_provider.delete_form
+  base_route:  entity.ounit_provider.edit_form
+  title: 'Delete'
+  weight: 10

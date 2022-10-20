@@ -30,6 +30,14 @@ entity.ounit_provider.edit_form:
   requirements:
     _permission: 'administer ounit provider entities'
 
+entity.ounit_provider.preview_form:
+  path: '/admin/ewp/ounit/get/{ounit_provider}/preview'
+  defaults:
+    _entity_form: 'ounit_provider.preview'
+    _title: 'Preview Organizational Unit provider'
+  requirements:
+    _permission: 'administer ounit provider entities'
+
 entity.ounit_provider.delete_form:
   path: '/admin/ewp/ounit/get/{ounit_provider}/delete'
   defaults:
