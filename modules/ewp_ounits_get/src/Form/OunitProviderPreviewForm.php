@@ -4,6 +4,9 @@ namespace Drupal\ewp_ounits_get\Form;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\ewp_ounits_get\JsonDataProcessor;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -12,6 +15,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @property \Drupal\ewp_ounits_get\OunitProviderInterface $entity
  */
 class OunitProviderPreviewForm extends EntityForm {
+
+  /**
+   * JSON data fetcher service.
+   *
+   * @var \Drupal\ewp_ounits_get\JsonDataFetcherInterface
+   */
+  protected $jsonDataFetcher;
+
+  /**
+   * JSON data processing service.
+   *
+   * @var \Drupal\ewp_ounits_get\JsonDataProcessorInterface
+   */
+  protected $jsonDataProcessor;
 
   /**
    * A logger instance.
@@ -33,6 +50,8 @@ class OunitProviderPreviewForm extends EntityForm {
   public static function create(ContainerInterface $container) {
     // Instantiates this form class.
     $instance = parent::create($container);
+    $instance->jsonDataFetcher      = $container->get('ewp_ounits_get.fetch');
+    $instance->jsonDataProcessor    = $container->get('ewp_ounits_get.json');
     $instance->loggerFactory        = $container->get('logger.factory');
     $instance->logger = $instance->loggerFactory->get('ewp_ounits_get');
     $instance->messenger            = $container->get('messenger');
@@ -43,10 +62,74 @@ class OunitProviderPreviewForm extends EntityForm {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
-
     $form = parent::form($form, $form_state);
 
-    dpm($this);
+    $temp_store_key = $this->entity->heiId() . '.ounit';
+    $endpoint = $this->entity->get('collection_url');
+
+    $json_data = $this->jsonDataFetcher->load($temp_store_key, $endpoint);
+    $collection = \json_decode($json_data, TRUE);
+    $data = $collection[JsonDataProcessor::DATA_KEY];
+
+    $url_options = ['attributes' => ['target' => '_blank']];
+    $endpoint_url = Url::fromUri($endpoint, $url_options);
+    $endpoint_link = Link::fromTextAndUrl($endpoint, $endpoint_url);
+
+    $form['header'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Summary'),
+      '#open' => TRUE,
+    ];
+
+    $form['header']['hei_id'] = [
+      '#type' => 'item',
+      '#title' => $this->t('Institution ID'),
+      '#markup' => '<code>' . $this->entity->heiId() . '</code>',
+    ];
+
+    $form['header']['collection_url'] = [
+      '#type' => 'item',
+      '#title' => $this->t('Resource collection URL'),
+      '#markup' => '<code>' . $endpoint_link->toString() . '</code>',
+    ];
+
+    $form['header']['count'] = [
+      '#type' => 'item',
+      '#title' => $this->t('Item count'),
+      '#markup' => '<code>' . count($data) . '</code>',
+    ];
+
+    $header = [
+      JsonDataProcessor::TYPE_KEY,
+      JsonDataProcessor::ID_KEY,
+      JsonDataProcessor::TITLE_KEY,
+      JsonDataProcessor::LINKS_KEY
+    ];
+
+    $rows = [];
+
+    foreach ($data as $resource) {
+      $uri = $this->jsonDataProcessor
+        ->getResourceLinkByType($resource, JsonDataProcessor::SELF_KEY);
+
+      $row = [
+        $this->jsonDataProcessor->getResourceType($resource),
+        $this->jsonDataProcessor->getResourceId($resource),
+        $this->jsonDataProcessor->getResourceTitle($resource),
+        Link::fromTextAndUrl(
+          JsonDataProcessor::SELF_KEY,
+          Url::fromUri($uri, $url_options)
+        ),
+      ];
+
+      $rows[] = $row;
+    }
+
+    $form['table'] = [
+      '#type' => 'table',
+      '#header' => $header,
+      '#rows' => $rows,
+    ];
 
     return $form;
   }

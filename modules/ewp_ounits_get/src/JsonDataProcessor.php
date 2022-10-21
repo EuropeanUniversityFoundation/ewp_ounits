@@ -169,7 +169,7 @@ class JsonDataProcessor implements JsonDataProcessorInterface {
 
     $resource_links = $resource[self::LINKS_KEY] ?? [];
 
-    if (empty($link) && \array_key_exists($link_type, $resource_links) {
+    if (empty($link) && \array_key_exists($link_type, $resource_links)) {
       $link = $resource_links[$link_type][self::HREF_KEY] ?? '';
     }
 
