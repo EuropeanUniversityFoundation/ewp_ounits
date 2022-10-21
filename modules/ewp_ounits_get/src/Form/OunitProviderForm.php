@@ -4,6 +4,7 @@ namespace Drupal\ewp_ounits_get\Form;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Organizational Unit provider form.
@@ -11,6 +12,23 @@ use Drupal\Core\Form\FormStateInterface;
  * @property \Drupal\ewp_ounits_get\OunitProviderInterface $entity
  */
 class OunitProviderForm extends EntityForm {
+
+  /**
+   * JSON data fetcher service.
+   *
+   * @var \Drupal\ewp_ounits_get\JsonDataFetcherInterface
+   */
+  protected $jsonDataFetcher;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    // Instantiates this form class.
+    $instance = parent::create($container);
+    $instance->jsonDataFetcher = $container->get('ewp_ounits_get.fetch');
+    return $instance;
+  }
 
   /**
    * {@inheritdoc}
@@ -81,6 +99,22 @@ class OunitProviderForm extends EntityForm {
     ];
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $collection_url = $form_state->getValue('collection_url');
+
+    $code = $this->jsonDataFetcher->getResponseCode($collection_url);
+
+    if ($code !== 200) {
+      $message = $this->t('Failed to fetch data from %endpoint.', [
+        '%endpoint' => $collection_url
+      ]);
+      $form_state->setErrorByName('collection_url', $message);
+    }
   }
 
   /**
