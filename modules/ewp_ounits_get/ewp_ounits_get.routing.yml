@@ -26,7 +26,7 @@ entity.ounit_provider.edit_form:
   path: '/admin/ewp/ounit/get/{ounit_provider}'
   defaults:
     _entity_form: 'ounit_provider.edit'
-    _title: 'Edit Organizational Unit provider'
+    _title_callback: '\Drupal\ewp_ounits_get\Controller\OunitProviderController::editFormTitle'
   requirements:
     _permission: 'administer ounit provider entities'
 
@@ -34,7 +34,7 @@ entity.ounit_provider.preview_form:
   path: '/admin/ewp/ounit/get/{ounit_provider}/preview'
   defaults:
     _entity_form: 'ounit_provider.preview'
-    _title: 'Preview Organizational Unit provider'
+    _title_callback: '\Drupal\ewp_ounits_get\Controller\OunitProviderController::previewFormTitle'
   requirements:
     _permission: 'administer ounit provider entities'
 
