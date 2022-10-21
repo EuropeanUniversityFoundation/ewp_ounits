@@ -1,0 +1,4 @@
+services:
+  ewp_ounits_get.json:
+    class: Drupal\ewp_ounits_get\JsonDataProcessor
+    arguments: []
