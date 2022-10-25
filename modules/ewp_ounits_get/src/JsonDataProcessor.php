@@ -2,26 +2,28 @@
 
 namespace Drupal\ewp_ounits_get;
 
+use JsonDataSchemaInterface;
+
 /**
  * JSON:API data processing service.
  */
 class JsonDataProcessor implements JsonDataProcessorInterface {
 
   // JSON:API primary keys.
-  const DATA_KEY  = 'data';
-  const INC_KEY   = 'included';
-  const LINKS_KEY = 'links';
+  const DATA_KEY  = JsonDataSchemaInterface::JSONAPI_DATA;
+  const INC_KEY   = JsonDataSchemaInterface::JSONAPI_INC;
+  const LINKS_KEY = JsonDataSchemaInterface::JSONAPI_LINKS;
 
   // JSON:API data keys.
-  const TYPE_KEY  = 'type';
-  const ID_KEY    = 'id';
-  const ATTR_KEY  = 'attributes';
-  const REL_KEY   = 'relationships';
-  const META_KEY  = 'meta';
+  const TYPE_KEY  = JsonDataSchemaInterface::JSONAPI_TYPE;
+  const ID_KEY    = JsonDataSchemaInterface::JSONAPI_ID;
+  const ATTR_KEY  = JsonDataSchemaInterface::JSONAPI_ATTR;
+  const REL_KEY   = JsonDataSchemaInterface::JSONAPI_REL;
+  const META_KEY  = JsonDataSchemaInterface::JSONAPI_META;
 
   // JSON:API link keys.
-  const SELF_KEY  = 'self';
-  const HREF_KEY  = 'href';
+  const SELF_KEY  = JsonDataSchemaInterface::JSONAPI_SELF;
+  const HREF_KEY  = JsonDataSchemaInterface::JSONAPI_HREF;
 
   // Drupal specific keys.
   const LABEL_KEY = 'label';
