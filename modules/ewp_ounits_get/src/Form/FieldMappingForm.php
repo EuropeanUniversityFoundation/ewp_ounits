@@ -71,17 +71,13 @@ class FieldMappingForm extends ConfigFormBase {
     foreach ($fieldmap as $field => $attribute) {
       $field_keys = explode('__', $field);
       $attribute_keys = explode('__', $attribute);
-      $value_tree = (isset($attribute_keys[1]))
-        ? $attribute_keys[0] . '.' . $attribute_keys[1]
-        : $attribute_keys[0];
+      $attribute_option = implode('.', $attribute_keys);
 
-      $defaults[$field_keys[0]][$field_keys[1]] = $value_tree;
+      $defaults[$field_keys[0]][$field_keys[1]] = $attribute_option;
     }
 
     $entity_fields = $this->ounitFields->getEntityFields();
     $options = $this->ounitFields->getAttributeOptions();
-
-    dpm($defaults);
 
     foreach ($entity_fields as $field => $info) {
       $form[$field] = [
