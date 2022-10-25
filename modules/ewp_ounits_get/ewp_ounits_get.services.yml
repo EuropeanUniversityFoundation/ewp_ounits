@@ -2,6 +2,12 @@ services:
   ewp_ounits_get.fetch:
     class: Drupal\ewp_ounits_get\JsonDataFetcher
     arguments: ['@http_client', '@logger.factory', '@tempstore.shared', '@string_translation']
+  ewp_ounits_get.fields:
+    class: Drupal\ewp_ounits_get\OunitFieldManager
+    arguments: ['@entity_field.manager', '@ewp_ounits_get.schema.ounit.occapi']
   ewp_ounits_get.json:
     class: Drupal\ewp_ounits_get\JsonDataProcessor
+    arguments: []
+  ewp_ounits_get.schema.ounit.occapi:
+    class: Drupal\ewp_ounits_get\OccapiOunitDataSchema
     arguments: []

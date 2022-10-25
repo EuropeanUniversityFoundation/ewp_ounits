@@ -45,3 +45,11 @@ entity.ounit_provider.delete_form:
     _title: 'Delete Organizational Unit provider'
   requirements:
     _permission: 'administer ounit provider entities'
+
+ewp_ounits_get.field_mapping:
+  path: '/admin/ewp/ounit/get/fieldmap'
+  defaults:
+    _title: 'Field mapping'
+    _form: 'Drupal\ewp_ounits_get\Form\FieldMappingForm'
+  requirements:
+    _permission: 'administer ounit provider entities'
