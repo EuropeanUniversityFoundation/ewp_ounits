@@ -19,4 +19,20 @@ interface OunitFieldManagerInterface {
    */
   public function getEntityFields();
 
+  /**
+   * Provides the JSON:API attributes for mapping.
+   *
+   * @return array
+   *   The JSON:API attributes.
+   */
+  public function getJsonAttributes();
+
+  /**
+  * Provides the JSON:API attributes as select options.
+  *
+  * @return array
+  *   The JSON:API attributes as select options.
+   */
+  public function getAttributeOptions();
+
 }

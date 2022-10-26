@@ -65,11 +65,12 @@ class OunitFieldManager implements OunitFieldManagerInterface {
   public function getEntityFields(): array {
     $fields = [];
 
-    // Load the individual entity fields
+    // Load the individual entity fields.
     $field_definitions = $this->entityFieldManager
       ->getFieldDefinitions(self::ENTITY_TYPE, self::ENTITY_TYPE);
 
     foreach ($field_definitions as $field_name => $field_definition) {
+      // Skip specific fields.
       if (in_array($field_name, self::IGNORE_FIELDS)) {
         continue;
       }
@@ -77,19 +78,23 @@ class OunitFieldManager implements OunitFieldManagerInterface {
       $storage_definition = $field_definition->getFieldStorageDefinition();
       $field_type = $storage_definition->getType();
 
+      // Skip specific field types.
       if (in_array($field_type, self::IGNORE_FIELD_TYPES)) {
         continue;
       }
 
+      // Gather information about each field.
       $fields[$field_name]['type'] = $field_type;
       $fields[$field_name]['label'] = $field_definition->getLabel();
-      $fields[$field_name]['required'] = ($field_definition->isRequired());
+      $fields[$field_name]['required'] = $field_definition->isRequired();
 
       $property_definitions = $storage_definition->getPropertyDefinitions();
 
+      // Gather the data type of each field property.
       foreach ($property_definitions as $name => $definition) {
         $type = $definition->getDataType();
 
+        // Skip specific data types.
         if (!in_array($type, self::IGNORE_PROPERTY_TYPES)) {
           $fields[$field_name]['properties'][$name] = $type;
         }
@@ -108,9 +113,11 @@ class OunitFieldManager implements OunitFieldManagerInterface {
   public function getJsonAttributes(): array {
     $schema = $this->dataSchema->getSchema();
 
-    $type = $schema[JsonDataSchemaInterface::JSONAPI_ID];
-    $attributes = [JsonDataSchemaInterface::JSONAPI_ID => $type];
+    // Include the resource ID ahead of everything else.
+    $data_type = $schema[JsonDataSchemaInterface::JSONAPI_ID];
+    $attributes = [JsonDataSchemaInterface::JSONAPI_ID => $data_type];
 
+    // Gather the attribute data types.
     foreach ($schema[JsonDataSchemaInterface::JSONAPI_ATTR] as $key => $value) {
       $attributes[$key] = $value;
     }

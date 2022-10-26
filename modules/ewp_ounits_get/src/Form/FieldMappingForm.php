@@ -70,8 +70,7 @@ class FieldMappingForm extends ConfigFormBase {
 
     foreach ($fieldmap as $field => $attribute) {
       $field_keys = explode('__', $field);
-      $attribute_keys = explode('__', $attribute);
-      $attribute_option = implode('.', $attribute_keys);
+      $attribute_option = str_replace('__', '.', $attribute);
 
       $defaults[$field_keys[0]][$field_keys[1]] = $attribute_option;
     }
