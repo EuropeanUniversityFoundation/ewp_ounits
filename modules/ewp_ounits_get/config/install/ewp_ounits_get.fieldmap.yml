@@ -1,0 +1,9 @@
+field_mapping:
+  label__value: title__string
+  abbreviation__value: abbreviation
+  name__string: title__string
+  name__lang: title__lang
+  ounit_code__value: ounitCode
+  ounit_id__value: ounitId
+  website_url__uri: url__uri
+  website_url__lang: url__lang
