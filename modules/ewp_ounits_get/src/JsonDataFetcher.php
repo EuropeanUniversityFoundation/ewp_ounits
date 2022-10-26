@@ -85,8 +85,12 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
       $this->logger->notice($message);
     }
 
-    // Return whatever is in storage.
-    return $this->tempStore->get($temp_store_key);
+    // Retrieve whatever is in storage.
+    $data = $this->tempStore->get($temp_store_key);
+    // Process the data as needed.
+    $processed = (!empty($data)) ? $this->process($data) : NULL;
+
+    return $processed;
   }
 
   /**
@@ -144,6 +148,29 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
     }
 
     return $code;
+  }
+
+  /**
+   * Process JSON:API data before validation.
+   *
+   * @param string $data
+   *   The original data.
+   *
+   * @return string
+   *   The processed data.
+   */
+  protected function process(string $data): string {
+    $processed = $data;
+
+    $replacements = [
+      'ouint' => 'ounit',
+    ];
+
+    foreach ($replacements as $wrong => $right) {
+      $processed = str_replace($wrong, $right, $processed, $count);
+    }
+
+    return $processed;
   }
 
 }
