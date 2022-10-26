@@ -16,6 +16,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class OunitProviderPreviewForm extends EntityForm {
 
+  const JSONAPI_OUNIT_ID = 'ounitId';
+  const JSONAPI_OUNIT_CODE = 'ounitCode';
+
   /**
    * JSON data fetcher service.
    *
@@ -29,6 +32,13 @@ class OunitProviderPreviewForm extends EntityForm {
    * @var \Drupal\ewp_ounits_get\JsonDataProcessorInterface
    */
   protected $jsonDataProcessor;
+
+  /**
+   * JSON data validation service.
+   *
+   * @var \Drupal\ewp_ounits_get\JsonDataSchemaValidatorInterface
+   */
+  protected $jsonDataValidator;
 
   /**
    * A logger instance.
@@ -52,6 +62,7 @@ class OunitProviderPreviewForm extends EntityForm {
     $instance = parent::create($container);
     $instance->jsonDataFetcher      = $container->get('ewp_ounits_get.fetch');
     $instance->jsonDataProcessor    = $container->get('ewp_ounits_get.json');
+    $instance->jsonDataValidator    = $container->get('ewp_ounits_get.validate.ounit.occapi');
     $instance->loggerFactory        = $container->get('logger.factory');
     $instance->logger = $instance->loggerFactory->get('ewp_ounits_get');
     $instance->messenger            = $container->get('messenger');
@@ -107,12 +118,28 @@ class OunitProviderPreviewForm extends EntityForm {
       JsonDataProcessor::TYPE_KEY,
       JsonDataProcessor::ID_KEY,
       JsonDataProcessor::TITLE_KEY,
-      JsonDataProcessor::LINKS_KEY
+      self::JSONAPI_OUNIT_ID,
+      self::JSONAPI_OUNIT_CODE,
+      $this->t('Errors'),
+      JsonDataProcessor::LINKS_KEY,
     ];
 
     $rows = [];
 
     foreach ($data as $resource) {
+      foreach ([self::JSONAPI_OUNIT_ID, self::JSONAPI_OUNIT_CODE] as $key) {
+        $attributes[$key] = $this->jsonDataProcessor
+          ->getResourceAttribute($resource, $key)[$key];
+      }
+
+      $errors = $this->jsonDataValidator->validateSchema($resource);
+
+      if (!empty($errors)) {
+        foreach ($errors as $error) {
+          $this->messenger->addError($error);
+        }
+      }
+
       $uri = $this->jsonDataProcessor
         ->getResourceLinkByType($resource, JsonDataProcessor::SELF_KEY);
 
@@ -120,6 +147,9 @@ class OunitProviderPreviewForm extends EntityForm {
         $this->jsonDataProcessor->getResourceType($resource),
         $this->jsonDataProcessor->getResourceId($resource),
         $this->jsonDataProcessor->getResourceTitle($resource),
+        $attributes[self::JSONAPI_OUNIT_ID],
+        $attributes[self::JSONAPI_OUNIT_CODE],
+        count($errors),
         Link::fromTextAndUrl(
           JsonDataProcessor::SELF_KEY,
           Url::fromUri($uri, $url_options)

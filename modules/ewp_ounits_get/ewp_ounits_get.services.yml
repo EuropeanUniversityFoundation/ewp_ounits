@@ -11,3 +11,6 @@ services:
   ewp_ounits_get.schema.ounit.occapi:
     class: Drupal\ewp_ounits_get\OccapiOunitDataSchema
     arguments: []
+  ewp_ounits_get.validate.ounit.occapi:
+    class: Drupal\ewp_ounits_get\OccapiOunitDataSchemaValidator
+    arguments: ['@ewp_ounits_get.schema.ounit.occapi', '@string_translation']
