@@ -24,6 +24,9 @@ interface JsonDataSchemaInterface {
   const JSONAPI_SELF  = 'self';
   const JSONAPI_HREF  = 'href';
 
+  // Requirements.
+  const REQUIRED_ATTR = '_required';
+
   /**
    * Defines the JSON:API data schema.
    *

@@ -42,6 +42,11 @@ class OccapiOunitDataSchema implements JsonDataSchemaInterface {
           JsonDataSchemaInterface::JSONAPI_HREF => 'uri',
         ],
       ],
+      JsonDataSchemaInterface::REQUIRED_ATTR = [
+        'title',
+        'ounitId',
+        'ounitCode',
+      ],
     ];
   }
 
