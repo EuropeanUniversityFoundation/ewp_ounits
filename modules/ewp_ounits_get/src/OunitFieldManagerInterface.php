@@ -2,8 +2,6 @@
 
 namespace Drupal\ewp_ounits_get;
 
-use Drupal\Core\Entity\EntityFieldManagerInterface;
-
 /**
  * Defines an interface for an Organizational Unit field manager.
  */

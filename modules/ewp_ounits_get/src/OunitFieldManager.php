@@ -2,6 +2,7 @@
 
 namespace Drupal\ewp_ounits_get;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 
 /**
@@ -27,6 +28,13 @@ class OunitFieldManager implements OunitFieldManagerInterface {
   ];
 
   /**
+   * Config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
    * The entity field manager.
    *
    * @var \Drupal\Core\Entity\EntityFieldManagerInterface
@@ -43,15 +51,19 @@ class OunitFieldManager implements OunitFieldManagerInterface {
   /**
    * The constructor.
    *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The config factory.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   The entity field manager.
    * @param \Drupal\ewp_ounits_get\JsonDataSchemaInterface $data_schema
    *   JSON data schema.
    */
   public function __construct(
+    ConfigFactoryInterface $config_factory,
     EntityFieldManagerInterface $entity_field_manager,
     JsonDataSchemaInterface $data_schema
   ) {
+    $this->configFactory      = $config_factory;
     $this->entityFieldManager = $entity_field_manager;
     $this->dataSchema         = $data_schema;
   }
@@ -148,6 +160,34 @@ class OunitFieldManager implements OunitFieldManagerInterface {
     }
 
     return $options;
+  }
+
+  /**
+  * Converts JSON:API attributes to Organizational Unit data.
+  *
+  * @param array $attributes
+  *   The JSON:API attributes.
+  *
+  * @return array
+  *   The Organizational Unit data.
+   */
+  public function prepareOunitData(array $attributes): array {
+    $data = []
+
+    $fieldmap = $this->configFactory
+      ->get('ewp_ounits_get.fieldmap')
+      ->get('field_mapping');
+
+    foreach ($fieldmap as $field => $attribute) {
+      $field_keys = explode('__', $field);
+      $attribute_keys = explode('__', $attribute);
+
+      $data[$field_keys[0]][$field_keys[1]] = (count($attribute_keys) > 1)
+        ? $attribute_keys[0][$attribute_keys[1]]
+        : $attribute_keys[0];
+    }
+
+    return $data;
   }
 
 }
