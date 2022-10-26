@@ -35,7 +35,6 @@ class JsonDataProcessor implements JsonDataProcessorInterface {
   const TITLE_KEY = 'title';
   const LANG_PREF = 'en';
 
-
   /**
    * Get the data from a resource.
    *

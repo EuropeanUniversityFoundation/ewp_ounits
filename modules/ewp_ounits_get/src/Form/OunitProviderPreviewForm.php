@@ -69,7 +69,7 @@ class OunitProviderPreviewForm extends EntityForm {
 
     $json_data = $this->jsonDataFetcher->load($temp_store_key, $endpoint);
     $collection = \json_decode($json_data, TRUE);
-    $data = $collection[JsonDataProcessor::DATA_KEY];
+    $data = $collection[JsonDataProcessor::DATA_KEY] ?? [];
 
     $url_options = ['attributes' => ['target' => '_blank']];
     $endpoint_url = Url::fromUri($endpoint, $url_options);

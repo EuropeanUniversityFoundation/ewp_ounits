@@ -46,7 +46,7 @@ class OunitFieldManager implements OunitFieldManagerInterface {
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   The entity field manager.
    * @param \Drupal\ewp_ounits_get\JsonDataSchemaInterface $data_schema
-   *   JSON Data Keys service.
+   *   JSON data schema.
    */
   public function __construct(
     EntityFieldManagerInterface $entity_field_manager,
