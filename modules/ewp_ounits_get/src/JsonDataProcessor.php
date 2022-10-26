@@ -2,8 +2,6 @@
 
 namespace Drupal\ewp_ounits_get;
 
-use JsonDataSchemaInterface;
-
 /**
  * JSON:API data processing service.
  */

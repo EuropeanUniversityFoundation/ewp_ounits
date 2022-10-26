@@ -79,6 +79,10 @@ class OunitProviderPreviewForm extends EntityForm {
       '#type' => 'details',
       '#title' => $this->t('Summary'),
       '#open' => TRUE,
+      '#attributes' => [
+        'id' => 'previewFormHeader',
+      ],
+      '#weight' => 0,
     ];
 
     $form['header']['hei_id'] = [
@@ -129,7 +133,31 @@ class OunitProviderPreviewForm extends EntityForm {
       '#type' => 'table',
       '#header' => $header,
       '#rows' => $rows,
+      '#weight' => 2,
     ];
+
+    if (count($rows) > 10) {
+      $form['skip_to_end'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'a',
+        '#value' => $this->t('Skip to end'),
+        '#attributes' => [
+          'href' => '#previewFormEnd',
+        ],
+        '#weight' => 1,
+      ];
+
+      $form['back_to_top'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'a',
+        '#value' => $this->t('Back to top'),
+        '#attributes' => [
+          'id' => 'previewFormEnd',
+          'href' => '#previewFormHeader',
+        ],
+        '#weight' => 3,
+      ];
+    }
 
     return $form;
   }
@@ -147,9 +175,7 @@ class OunitProviderPreviewForm extends EntityForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
-    $result = parent::save($form, $form_state);
-
-    return $result;
+    return $this->entity;
   }
 
 }

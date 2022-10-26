@@ -98,6 +98,13 @@ class OunitProviderForm extends EntityForm {
       '#description' => $this->t('Description (optional).'),
     ];
 
+    $form['refresh'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Refresh temporary storage on Save'),
+      '#default_value' => FALSE,
+      '#return_value' => TRUE,
+    ];
+
     return $form;
   }
 
@@ -121,6 +128,15 @@ class OunitProviderForm extends EntityForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
+    $collection_url = $form_state->getValue('collection_url');
+    $temp_store_key = $form_state->getValue('hei_id') . '.ounit';
+    $refresh = $form_state->getValue('refresh');
+
+    if ($refresh && !empty($collection_url)) {
+      $json_data = $this->jsonDataFetcher
+        ->load($temp_store_key, $collection_url, TRUE);
+    }
+
     $result = parent::save($form, $form_state);
     $message_args = [
       '@entity_type' => $this->t('Organizational Unit provider'),
