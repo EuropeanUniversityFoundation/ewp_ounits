@@ -38,6 +38,14 @@ entity.ounit_provider.preview_form:
   requirements:
     _permission: 'administer ounit provider entities'
 
+entity.ounit_provider.import_form:
+  path: '/admin/ewp/ounit/get/{ounit_provider}/import'
+  defaults:
+    _entity_form: 'ounit_provider.import'
+    _title_callback: '\Drupal\ewp_ounits_get\Controller\OunitProviderController::importFormTitle'
+  requirements:
+    _entity_create_access: ounit
+
 entity.ounit_provider.delete_form:
   path: '/admin/ewp/ounit/get/{ounit_provider}/delete'
   defaults:
@@ -53,3 +61,28 @@ ewp_ounits_get.field_mapping:
     _form: 'Drupal\ewp_ounits_get\Form\FieldMappingForm'
   requirements:
     _permission: 'administer ounit provider entities'
+
+entity.ounit.import:
+  path: '/admin/ewp/ounit/import'
+  defaults:
+    _title_callback: '\Drupal\ewp_ounits_get\Controller\OunitProviderController::providerListTitle'
+    _controller: '\Drupal\ewp_ounits_get\Controller\OunitProviderController::providerList'
+  requirements:
+    _entity_create_access: ounit
+  options:
+    _admin_route: true
+
+entity.ounit.import.ounit_id:
+  path: '/admin/ewp/ounit/import/{ounit_provider}/{ounit_id}'
+  defaults:
+    _title: 'Import Organizational Units'
+    _controller: '\Drupal\ewp_ounits_get\Controller\OunitImportController::ounitImport'
+  requirements:
+    _entity_create_access: ounit
+  options:
+    _admin_route: true
+    parameters:
+      ounit_provider:
+        type: entity:ounit_provider
+      ounit_id:
+        type: ounit_id

@@ -24,6 +24,7 @@ use Drupal\ewp_ounits_get\OunitProviderInterface;
  *       "add" = "Drupal\ewp_ounits_get\Form\OunitProviderForm",
  *       "edit" = "Drupal\ewp_ounits_get\Form\OunitProviderForm",
  *       "preview" = "Drupal\ewp_ounits_get\Form\OunitProviderPreviewForm",
+ *       "import" = "Drupal\ewp_ounits_get\Form\OunitProviderImportForm",
  *       "delete" = "Drupal\Core\Entity\EntityDeleteForm"
  *     }
  *   },
@@ -34,6 +35,7 @@ use Drupal\ewp_ounits_get\OunitProviderInterface;
  *     "add-form" = "/admin/ewp/ounit/provider/add",
  *     "edit-form" = "/admin/ewp/ounit/provider/{ounit_provider}",
  *     "preview-form" = "/admin/ewp/ounit/provider/{ounit_provider}/preview",
+ *     "import-form" = "/admin/ewp/ounit/provider/{ounit_provider}/import",
  *     "delete-form" = "/admin/ewp/ounit/provider/{ounit_provider}/delete"
  *   },
  *   entity_keys = {

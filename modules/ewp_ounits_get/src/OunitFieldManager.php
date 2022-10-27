@@ -172,7 +172,7 @@ class OunitFieldManager implements OunitFieldManagerInterface {
   *   The Organizational Unit data.
    */
   public function prepareOunitData(array $attributes): array {
-    $data = []
+    $data = [];
 
     $fieldmap = $this->configFactory
       ->get('ewp_ounits_get.fieldmap')

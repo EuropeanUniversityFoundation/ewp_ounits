@@ -82,10 +82,6 @@ class OunitProviderPreviewForm extends EntityForm {
     $collection = \json_decode($json_data, TRUE);
     $data = $collection[JsonDataProcessor::DATA_KEY] ?? [];
 
-    $url_options = ['attributes' => ['target' => '_blank']];
-    $endpoint_url = Url::fromUri($endpoint, $url_options);
-    $endpoint_link = Link::fromTextAndUrl($endpoint, $endpoint_url);
-
     $form['header'] = [
       '#type' => 'details',
       '#title' => $this->t('Summary'),
@@ -105,7 +101,7 @@ class OunitProviderPreviewForm extends EntityForm {
     $form['header']['collection_url'] = [
       '#type' => 'item',
       '#title' => $this->t('Resource collection URL'),
-      '#markup' => '<code>' . $endpoint_link->toString() . '</code>',
+      '#markup' => '<code>' . $endpoint . '</code>',
     ];
 
     $form['header']['count'] = [
@@ -114,49 +110,12 @@ class OunitProviderPreviewForm extends EntityForm {
       '#markup' => '<code>' . count($data) . '</code>',
     ];
 
-    $header = [
-      JsonDataProcessor::TYPE_KEY,
-      JsonDataProcessor::ID_KEY,
-      JsonDataProcessor::TITLE_KEY,
-      self::JSONAPI_OUNIT_ID,
-      self::JSONAPI_OUNIT_CODE,
-      $this->t('Errors'),
-      JsonDataProcessor::LINKS_KEY,
-    ];
+    $header = $this->buildTableHeader();
 
     $rows = [];
 
     foreach ($data as $resource) {
-      foreach ([self::JSONAPI_OUNIT_ID, self::JSONAPI_OUNIT_CODE] as $key) {
-        $attributes[$key] = $this->jsonDataProcessor
-          ->getResourceAttribute($resource, $key)[$key];
-      }
-
-      $errors = $this->jsonDataValidator->validateSchema($resource);
-
-      if (!empty($errors)) {
-        foreach ($errors as $error) {
-          $this->messenger->addError($error);
-        }
-      }
-
-      $uri = $this->jsonDataProcessor
-        ->getResourceLinkByType($resource, JsonDataProcessor::SELF_KEY);
-
-      $row = [
-        $this->jsonDataProcessor->getResourceType($resource),
-        $this->jsonDataProcessor->getResourceId($resource),
-        $this->jsonDataProcessor->getResourceTitle($resource),
-        $attributes[self::JSONAPI_OUNIT_ID],
-        $attributes[self::JSONAPI_OUNIT_CODE],
-        count($errors),
-        Link::fromTextAndUrl(
-          JsonDataProcessor::SELF_KEY,
-          Url::fromUri($uri, $url_options)
-        ),
-      ];
-
-      $rows[] = $row;
+      $rows[] = $this->buildTableRow($resource);
     }
 
     $form['table'] = [
@@ -206,6 +165,59 @@ class OunitProviderPreviewForm extends EntityForm {
    */
   public function save(array $form, FormStateInterface $form_state) {
     return $this->entity;
+  }
+
+  /**
+   * Build the table header.
+   */
+  public function buildTableHeader() {
+    return [
+      JsonDataProcessor::TYPE_KEY,
+      JsonDataProcessor::ID_KEY,
+      JsonDataProcessor::TITLE_KEY,
+      self::JSONAPI_OUNIT_ID,
+      self::JSONAPI_OUNIT_CODE,
+      $this->t('Errors'),
+      JsonDataProcessor::LINKS_KEY,
+    ];
+  }
+
+  /**
+   * Build a table row from a data array.
+   */
+  public function buildTableRow(array $data) {
+    foreach ([self::JSONAPI_OUNIT_ID, self::JSONAPI_OUNIT_CODE] as $key) {
+      $attributes[$key] = $this->jsonDataProcessor
+        ->getResourceAttribute($data, $key)[$key];
+    }
+
+    $errors = $this->jsonDataValidator->validateSchema($data);
+
+    if (!empty($errors)) {
+      foreach ($errors as $error) {
+        $this->messenger->addError($error);
+      }
+    }
+
+    $uri = $this->jsonDataProcessor
+      ->getResourceLinkByType($data, JsonDataProcessor::SELF_KEY);
+
+    $url_options = ['attributes' => ['target' => '_blank']];
+
+    $row = [
+      $this->jsonDataProcessor->getResourceType($data),
+      $this->jsonDataProcessor->getResourceId($data),
+      $this->jsonDataProcessor->getResourceTitle($data),
+      $attributes[self::JSONAPI_OUNIT_ID],
+      $attributes[self::JSONAPI_OUNIT_CODE],
+      count($errors),
+      Link::fromTextAndUrl(
+        JsonDataProcessor::SELF_KEY,
+        Url::fromUri($uri, $url_options)
+      ),
+    ];
+
+    return $row;
   }
 
 }

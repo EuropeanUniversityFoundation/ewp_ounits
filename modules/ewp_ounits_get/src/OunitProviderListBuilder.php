@@ -45,6 +45,11 @@ class OunitProviderListBuilder extends ConfigEntityListBuilder {
         'weight' => 0,
         'url' => $entity->toUrl('preview-form'),
       ],
+      'import' => [
+        'title' => $this->t('Import data'),
+        'weight' => 1,
+        'url' => $entity->toUrl('import-form'),
+      ],
     ];
 
     return $operations;
