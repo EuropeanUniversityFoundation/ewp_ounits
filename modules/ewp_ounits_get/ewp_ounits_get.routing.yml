@@ -75,17 +75,17 @@ entity.ounit.import:
   options:
     _admin_route: true
 
-# entity.ounit.import.ounit_id:
-#   path: '/admin/ewp/ounit/import/{ounit_provider}/{ounit_id}'
-#   defaults:
-#     _title: 'Import Organizational Units'
-#     _controller: '\Drupal\ewp_ounits_get\Controller\OunitImportController::ounitImport'
-#   requirements:
-#     _entity_create_access: ounit
-#   options:
-#     _admin_route: true
-#     parameters:
-#       ounit_provider:
-#         type: entity:ounit_provider
-#       ounit_id:
-#         type: ounit_id
+entity.ounit.import.ounit_id:
+  path: '/ewp/ounit/import/{ounit_provider}/{ounit_id}'
+  defaults:
+    _title: 'Import Organizational Units'
+    _controller: '\Drupal\ewp_ounits_get\Controller\OunitImportController::ounitImport'
+  requirements:
+    _entity_create_access: ounit
+  options:
+    _admin_route: true
+    parameters:
+      ounit_provider:
+        type: entity:ounit_provider
+      ounit_id:
+        type: ounit_id

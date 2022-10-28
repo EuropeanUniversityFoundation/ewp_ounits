@@ -123,7 +123,7 @@ class OunitEntityManager implements OunitEntityManagerInterface {
    *   The matching Organizational Unit, or NULL if the Institution is missing.
    */
   public function ounitIdExists(string $hei_id, string $ounit_id): ?array {
-    $parent_hei = $this->entityTypeManager->heiIdExists($hei_id);
+    $parent_hei = $this->heiIdExists($hei_id);
 
     if (empty($parent_hei)) { return NULL; }
 
@@ -149,7 +149,7 @@ class OunitEntityManager implements OunitEntityManagerInterface {
    *   The matching Organizational Unit, or NULL if the Institution is missing.
    */
   public function ounitCodeExists(string $hei_id, string $ounit_code): ?array {
-    $parent_hei = $this->entityTypeManager->heiIdExists($hei_id);
+    $parent_hei = $this->heiIdExists($hei_id);
 
     if (empty($parent_hei)) { return NULL; }
 
