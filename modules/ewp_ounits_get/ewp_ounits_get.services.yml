@@ -1,7 +1,7 @@
 services:
   ewp_ounits_get.entity:
     class: Drupal\ewp_ounits_get\OunitEntityManager
-    arguments: ['@entity_type.manager', '@ewp_ounits_get.fields']
+    arguments: ['@entity_type.manager', '@ewp_ounits_get.fields', '@string_translation']
   ewp_ounits_get.fetch:
     class: Drupal\ewp_ounits_get\JsonDataFetcher
     arguments: ['@http_client', '@logger.factory', '@tempstore.shared', '@string_translation']

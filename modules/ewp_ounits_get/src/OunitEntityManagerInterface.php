@@ -39,6 +39,17 @@ interface OunitEntityManagerInterface {
   public function heiIdExists(string $hei_id);
 
   /**
+   * Provides an Institution label, dependending on whether the entity exists.
+   *
+   * @param string $hei_id
+   *   The Institution ID.
+   *
+   * @return string
+   *   The Institution label.
+   */
+  public function heiLabel(string $hei_id);
+
+  /**
    * Checks the existence of an Organizational Unit ID within an Institution.
    *
    * @param string $hei_id

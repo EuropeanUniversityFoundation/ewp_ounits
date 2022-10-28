@@ -40,7 +40,7 @@ class OunitProviderListController extends ControllerBase {
   protected $entityTypeManager;
 
   /**
-   * The ewp_ounits_get.entity service.
+   * The Organizational Unit entity manager.
    *
    * @var \Drupal\ewp_ounits_get\OunitEntityManagerInterface
    */
@@ -61,7 +61,7 @@ class OunitProviderListController extends ControllerBase {
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    * @param \Drupal\ewp_ounits_get\OunitEntityManagerInterface $ounit_entity
-   *   The ewp_ounits_get.entity service.
+   *   The Organizational Unit entity manager.
    * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
    *   The string translation service.
    */
@@ -119,7 +119,8 @@ class OunitProviderListController extends ControllerBase {
 
       $row = [
         self::ENTITY_TYPE => $provider->label(),
-        self::HEI_TYPE => $this->providerHeiLabel($provider),
+        self::HEI_TYPE => $this->ounitEntity
+          ->heiLabel($ounit_provider->heiId()),
         self::OPERATION_LINKS => (!empty($hei_exists))
           ? $this->providerLoadLink($provider)
           : $this->providerEditLink($provider),
@@ -166,20 +167,6 @@ class OunitProviderListController extends ControllerBase {
     $options = ['attributes' => ['class' => ['button']]];
 
     return $ounit_provider->toLink($text, $rel, $options);
-  }
-
-  /**
-   * Helper method that provides a label for a provider's Institution.
-   */
-  private function providerHeiLabel(OunitProviderInterface $ounit_provider) {
-    $hei_id = $ounit_provider->heiId();
-    $hei_exists = $this->ounitEntity->heiIdExists($hei_id);
-
-    foreach ($hei_exists as $id => $hei) { $hei_label = $hei->toLink(); }
-
-    return $hei_label ?? $this->t('Institution ID: %hei_id', [
-      '%hei_id' => $hei_id
-    ]);
   }
 
 }

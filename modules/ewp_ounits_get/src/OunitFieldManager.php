@@ -6,7 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 
 /**
- * Organizational Unit field manager service.
+ * Organizational Unit field manager.
  */
 class OunitFieldManager implements OunitFieldManagerInterface {
 

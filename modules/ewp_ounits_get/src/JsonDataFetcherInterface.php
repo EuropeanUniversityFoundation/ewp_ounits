@@ -3,7 +3,7 @@
 namespace Drupal\ewp_ounits_get;
 
 /**
- * Defines an interface for JSON:API data fetching.
+ * Defines an interface for a JSON:API data fetcher.
  */
 interface JsonDataFetcherInterface {
 

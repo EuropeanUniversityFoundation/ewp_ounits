@@ -10,7 +10,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
 /**
- * JSON data fetching service.
+ * JSON data fetcher.
  */
 class JsonDataFetcher implements JsonDataFetcherInterface {
 

@@ -3,7 +3,7 @@
 namespace Drupal\ewp_ounits_get;
 
 /**
- * JSON:API data processing service.
+ * JSON:API data processor.
  */
 class JsonDataProcessor implements JsonDataProcessorInterface {
 

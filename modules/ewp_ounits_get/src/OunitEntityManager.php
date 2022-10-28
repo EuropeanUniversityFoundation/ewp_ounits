@@ -3,11 +3,15 @@
 namespace Drupal\ewp_ounits_get;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\StringTranslation\TranslationInterface;
 
 /**
- * Defines an interface for an Organizational Unit entity manager.
+ * Organizational Unit entity manager.
  */
 class OunitEntityManager implements OunitEntityManagerInterface {
+
+  use StringTranslationTrait;
 
   /**
    * The entity type manager.
@@ -30,13 +34,17 @@ class OunitEntityManager implements OunitEntityManagerInterface {
    *   The entity type manager.
    * @param \Drupal\ewp_ounits_get\OunitFieldManagerInterface $ounit_field_manager
    *   The Organizational Unit field manager.
+   * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
+   *   The string translation service.
    */
   public function __construct(
     EntityTypeManagerInterface $entity_type_manager,
-    OunitFieldManagerInterface $ounit_field_manager
+    OunitFieldManagerInterface $ounit_field_manager,
+    TranslationInterface $string_translation
   ) {
     $this->entityTypeManager = $entity_type_manager;
-    $this->ounitFields = $ounit_field_manager;
+    $this->ounitFields       = $ounit_field_manager;
+    $this->stringTranslation = $string_translation;
   }
 
   /**
@@ -80,6 +88,27 @@ class OunitEntityManager implements OunitEntityManagerInterface {
       ->loadByProperties([self::UNIQUE_FIELD => $hei_id]);
 
     return $hei;
+  }
+
+  /**
+   * Provides an Institution label, dependending on whether the entity exists.
+   *
+   * @param string $hei_id
+   *   The Institution ID.
+   *
+   * @return string
+   *   The Institution label.
+   */
+  public function heiLabel(string $hei_id): string {
+    $hei_exists = $this->heiIdExists($hei_id);
+
+    foreach ($hei_exists as $id => $hei) {
+      $hei_label = $hei->toLink()->toString();
+    }
+
+    return $hei_label ?? $this->t('Institution ID: %hei_id', [
+      '%hei_id' => $hei_id
+    ]);
   }
 
   /**
