@@ -44,8 +44,8 @@ interface OunitEntityManagerInterface {
    * @param string $hei_id
    *   The Institution ID.
    *
-   * @return string
-   *   The Institution label.
+   * @return array
+   *   The Institution label as a render array.
    */
   public function heiLabel(string $hei_id);
 

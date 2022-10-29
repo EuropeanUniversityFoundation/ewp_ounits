@@ -34,6 +34,8 @@ class OunitEntityManager implements OunitEntityManagerInterface {
    *   The entity type manager.
    * @param \Drupal\ewp_ounits_get\OunitFieldManagerInterface $ounit_field_manager
    *   The Organizational Unit field manager.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer service.
    * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
    *   The string translation service.
    */
@@ -96,19 +98,23 @@ class OunitEntityManager implements OunitEntityManagerInterface {
    * @param string $hei_id
    *   The Institution ID.
    *
-   * @return string
-   *   The Institution label.
+   * @return array
+   *   The Institution label as a render array.
    */
-  public function heiLabel(string $hei_id): string {
+  public function heiLabel(string $hei_id): array {
     $hei_exists = $this->heiIdExists($hei_id);
 
-    foreach ($hei_exists as $id => $hei) {
-      $hei_label = $hei->toLink()->toString();
+    if (!empty($hei_exists)) {
+      foreach ($hei_exists as $id => $hei) {
+        $hei_label = $hei->toLink()->toRenderable();
+      }
+
+      return $hei_label;
     }
 
-    return $hei_label ?? $this->t('Institution ID: %hei_id', [
-      '%hei_id' => $hei_id
-    ]);
+    return ['#markup' => $this->t('Institution ID: %hei_id', [
+      '%hei_id' => $hei_id])
+    ];
   }
 
   /**

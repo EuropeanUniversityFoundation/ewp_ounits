@@ -162,7 +162,7 @@ class OunitProviderPreviewForm extends EntityForm {
     $form['summary'][self::HEI_ID] = [
       '#type' => 'item',
       '#title' => $this->t('Institution'),
-      '#markup' => $this->ounitEntity->heiLabel($this->entity->heiId()),
+      'data' => $this->ounitEntity->heiLabel($this->entity->heiId()),
     ];
 
     $form['summary'][self::COLLECTION_URL] = [

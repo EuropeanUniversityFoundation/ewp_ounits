@@ -119,8 +119,8 @@ class OunitProviderListController extends ControllerBase {
 
       $row = [
         self::ENTITY_TYPE => $provider->label(),
-        self::HEI_TYPE => $this->ounitEntity
-          ->heiLabel($ounit_provider->heiId()),
+        self::HEI_TYPE => ['data' => $this->ounitEntity
+          ->heiLabel($provider->heiId())],
         self::OPERATION_LINKS => (!empty($hei_exists))
           ? $this->providerLoadLink($provider)
           : $this->providerEditLink($provider),
