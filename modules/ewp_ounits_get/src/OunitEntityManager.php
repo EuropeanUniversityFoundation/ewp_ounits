@@ -61,7 +61,7 @@ class OunitEntityManager implements OunitEntityManagerInterface {
    *   The created Organizational Unit, or NULL if the Institution is missing.
    */
   public function create(string $hei_id, array $ounit_data): ?array {
-    $parent_hei = $this->entityTypeManager->heiIdExists($hei_id);
+    $parent_hei = $this->heiIdExists($hei_id);
 
     if (empty($parent_hei)) { return NULL; }
 
@@ -70,7 +70,8 @@ class OunitEntityManager implements OunitEntityManagerInterface {
       ->create($ounit_data);
     $new->save();
 
-    $ounit = $this->ounitIdExists($hei_id, $ounit_data[self::FIELD_ID]);
+    $ounit_id = $ounit_data[self::FIELD_ID]['value'];
+    $ounit = $this->ounitIdExists($hei_id, $ounit_id);
 
     return $ounit;
   }

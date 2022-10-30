@@ -15,7 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class OunitProviderListController extends ControllerBase {
 
-
   const ENTITY_TYPE     = 'ounit_provider';
   const HEI_TYPE        = OunitEntityManagerInterface::REFERENCED_TYPE;
   const OPERATION_LINKS = 'operations';

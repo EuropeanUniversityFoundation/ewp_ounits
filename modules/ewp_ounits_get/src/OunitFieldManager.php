@@ -178,13 +178,69 @@ class OunitFieldManager implements OunitFieldManagerInterface {
       ->get('ewp_ounits_get.fieldmap')
       ->get('field_mapping');
 
-    foreach ($fieldmap as $field => $attribute) {
+    foreach ($fieldmap as $field => $source) {
       $field_keys = explode('__', $field);
-      $attribute_keys = explode('__', $attribute);
+      $source_keys = explode('__', $source);
 
-      $data[$field_keys[0]][$field_keys[1]] = (count($attribute_keys) > 1)
-        ? $attribute_keys[0][$attribute_keys[1]]
-        : $attribute_keys[0];
+      $field_name = $field_keys[0];
+      $field_prop = $field_keys[1];
+
+      $tree[$field_name][$field_prop] = (count($source_keys) > 1)
+        ? [$source_keys[0] => $source_keys[1]]
+        : $source_keys[0];
+    }
+
+    foreach ($tree as $field => $properties) {
+      foreach ($properties as $property => $source) {
+        if (!is_array($source)) {
+          if (!empty($attributes[$source])) {
+            $data[$field][$property] = $attributes[$source];
+          }
+        }
+        else {
+          foreach ($source as $src_field => $src_property) {
+            if (!empty($attributes[$src_field])) {
+              $arr_keys = array_keys($attributes[$src_field]);
+              $str_keys = array_filter($arr_keys, 'is_string');
+              $num_only = (count($str_keys) === 0);
+
+              if ($num_only) {
+                foreach ($attributes[$src_field] as $i => $item) {
+                  foreach ($item as $item_key => $item_value) {
+                    if ($src_property === $item_key) {
+                      $data[$field][$i][$property] = $item_value;
+                    }
+                  }
+                }
+              }
+              else {
+                foreach ($attributes[$src_field] as $item_key => $item_value) {
+                  if ($src_property === $item_key) {
+                    $data[$field][$property] = $item_value;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    $field_definitions = $this->entityFieldManager
+      ->getFieldDefinitions(self::ENTITY_TYPE, self::ENTITY_TYPE);
+
+    foreach ($field_definitions as $field_name => $definition) {
+      if (array_key_exists($field_name, $data)) {
+        $max = $definition->getFieldStorageDefinition()->getCardinality();
+
+        $arr_keys = array_keys($data[$field_name]);
+        $str_keys = array_filter($arr_keys, 'is_string');
+        $num_only = (count($str_keys) === 0);
+
+        if ($num_only && $max === 1) {
+          $data[$field_name] = $data[$field_name][0];
+        }
+      }
     }
 
     return $data;
