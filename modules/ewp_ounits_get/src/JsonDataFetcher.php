@@ -2,6 +2,7 @@
 
 namespace Drupal\ewp_ounits_get;
 
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\TempStore\SharedTempStoreFactory;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -31,6 +32,13 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
   protected $logger;
 
   /**
+   * The module handler to invoke the alter hooks with.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
    * An instance of the key/value store.
    *
    * @var \Drupal\Core\TempStore\SharedTempStore
@@ -44,6 +52,8 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
    *   HTTP client.
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
    *   The logger factory service.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler to invoke the alter hooks with.
    * @param \Drupal\Core\TempStore\SharedTempStoreFactory $temp_store_factory
    *   The factory for the temp store object.
    * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
@@ -52,11 +62,13 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
   public function __construct(
     Client $http_client,
     LoggerChannelFactoryInterface $logger_factory,
+    ModuleHandlerInterface $module_handler,
     SharedTempStoreFactory $temp_store_factory,
     TranslationInterface $string_translation
   ) {
     $this->httpClient         = $http_client;
     $this->logger             = $logger_factory->get('ewp_ounits_get');
+    $this->moduleHandler      = $module_handler;
     $this->tempStore          = $temp_store_factory->get('ewp_ounits_get');
     $this->stringTranslation  = $string_translation;
   }
@@ -77,8 +89,12 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
   public function load(string $temp_store_key, string $endpoint, $refresh = FALSE): ?string {
     // If tempstore is empty OR should be refreshed.
     if (empty($this->tempStore->get($temp_store_key)) || $refresh) {
-      // Get the data from the provided endpoint and store it.
-      $this->tempStore->set($temp_store_key, $this->get($endpoint));
+      // Get the data from the provided endpoint.
+      $raw = $this->get($endpoint);
+      // Allow other modules to alter the raw data before saving it.
+      $this->moduleHandler->alter('ounit_data_get', $raw);
+      // Save the data to tempstore.
+      $this->tempStore->set($temp_store_key, $raw);
       $message = $this->t("Loaded @key into temporary storage", [
         '@key' => $temp_store_key
       ]);
@@ -87,10 +103,10 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
 
     // Retrieve whatever is in storage.
     $data = $this->tempStore->get($temp_store_key);
-    // Process the data as needed.
-    $processed = (!empty($data)) ? $this->process($data) : NULL;
+    // Allow other modules to alter the tempstore data before serving it.
+    $this->moduleHandler->alter('ounit_data_load', $data);
 
-    return $processed;
+    return $data;
   }
 
   /**
@@ -148,29 +164,6 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
     }
 
     return $code;
-  }
-
-  /**
-   * Process JSON:API data before validation.
-   *
-   * @param string $data
-   *   The original data.
-   *
-   * @return string
-   *   The processed data.
-   */
-  protected function process(string $data): string {
-    $processed = $data;
-
-    $replacements = [
-      'ouint' => 'ounit',
-    ];
-
-    foreach ($replacements as $wrong => $right) {
-      $processed = str_replace($wrong, $right, $processed, $count);
-    }
-
-    return $processed;
   }
 
 }
