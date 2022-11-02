@@ -42,6 +42,13 @@ class OunitFieldManager implements OunitFieldManagerInterface {
   protected $entityFieldManager;
 
   /**
+   * JSON data processor.
+   *
+   * @var \Drupal\ewp_ounits_get\JsonDataProcessorInterface
+   */
+  protected $jsonDataProcessor;
+
+  /**
    * JSON data schema.
    *
    * @var \Drupal\ewp_ounits_get\JsonDataSchemaInterface
@@ -55,16 +62,20 @@ class OunitFieldManager implements OunitFieldManagerInterface {
    *   The config factory.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   The entity field manager.
+   * @param \Drupal\ewp_ounits_get\JsonDataProcessorInterface $json_data_processor
+   *   JSON data schema.
    * @param \Drupal\ewp_ounits_get\JsonDataSchemaInterface $data_schema
    *   JSON data schema.
    */
   public function __construct(
     ConfigFactoryInterface $config_factory,
     EntityFieldManagerInterface $entity_field_manager,
+    JsonDataProcessorInterface $json_data_processor,
     JsonDataSchemaInterface $data_schema
   ) {
     $this->configFactory      = $config_factory;
     $this->entityFieldManager = $entity_field_manager;
+    $this->jsonDataProcessor  = $json_data_processor;
     $this->dataSchema         = $data_schema;
   }
 
@@ -205,7 +216,10 @@ class OunitFieldManager implements OunitFieldManagerInterface {
               $num_only = (count($str_keys) === 0);
 
               if ($num_only) {
-                foreach ($attributes[$src_field] as $i => $item) {
+                $sorted = $this->jsonDataProcessor
+                  ->sortByLang($attributes[$src_field]);
+
+                foreach ($sorted as $i => $item) {
                   foreach ($item as $item_key => $item_value) {
                     if ($src_property === $item_key) {
                       $data[$field][$i][$property] = $item_value;

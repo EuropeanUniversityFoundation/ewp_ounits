@@ -7,7 +7,7 @@ services:
     arguments: ['@http_client', '@logger.factory', '@module_handler', '@tempstore.shared', '@string_translation']
   ewp_ounits_get.fields:
     class: Drupal\ewp_ounits_get\OunitFieldManager
-    arguments: ['@config.factory', '@entity_field.manager', '@ewp_ounits_get.schema.ounit.occapi']
+    arguments: ['@config.factory', '@entity_field.manager', '@ewp_ounits_get.json', '@ewp_ounits_get.schema.ounit.occapi']
   ewp_ounits_get.json:
     class: Drupal\ewp_ounits_get\JsonDataProcessor
     arguments: []

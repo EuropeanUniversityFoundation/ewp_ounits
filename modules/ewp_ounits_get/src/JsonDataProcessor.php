@@ -233,12 +233,14 @@ class JsonDataProcessor implements JsonDataProcessorInterface {
    * @return array
    *   The sorted data.
    */
-  protected function sortByLang(array $language_typed_data): array {
+  public function sortByLang(array $language_typed_data): array {
     $preferred = [];
     $remaining = [];
 
     foreach ($language_typed_data as $item) {
-      if ($item[self::LANG_KEY] ?? NULL === self::LANG_PREF) {
+      $item_lang = $item[self::LANG_KEY] ?? NULL;
+
+      if ($item_lang === self::LANG_PREF) {
         \array_push($preferred, $item);
       }
       else {
