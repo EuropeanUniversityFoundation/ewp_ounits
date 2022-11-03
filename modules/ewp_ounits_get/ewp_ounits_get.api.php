@@ -6,12 +6,14 @@
  */
 
 /**
-* Alter the Organizational Unit data before saving it to temporary storage.
-*
-* @param string $data
-*   Data being retrieved.
+ * Alter the Organizational Unit data before saving it to temporary storage.
+ *
+ * @param string $data
+ *   Data being retrieved.
+ * @param array $context
+ *   Context containing unalterable $temp_store_key.
  */
-function hook_ounit_data_get_alter(string &$data) {
+function hook_ounit_data_get_alter(string &$data, array $context) {
   // Count the number of resources in the data set.
   $resource_type = 'ounit';
 
@@ -32,8 +34,10 @@ function hook_ounit_data_get_alter(string &$data) {
  *
  * @param string $data
  *   Data being loaded.
+ * @param array $context
+ *   Context containing unalterable $temp_store_key.
  */
-function hook_ounit_data_load_alter(string &$data) {
+function hook_ounit_data_load_alter(string &$data, array $context) {
   // Fix a known typo while it gets fixed.
   $replacements = [
     'ouint' => 'ounit',
