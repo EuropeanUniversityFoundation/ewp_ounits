@@ -129,7 +129,7 @@ class OunitProviderForm extends EntityForm {
    */
   public function save(array $form, FormStateInterface $form_state) {
     $collection_url = $form_state->getValue('collection_url');
-    $temp_store_key = $form_state->getValue('hei_id') . '.ounit';
+    $temp_store_key = $form_state->getValue('id') . '.ounit';
     $refresh = $form_state->getValue('refresh');
 
     if ($refresh && !empty($collection_url)) {

@@ -122,8 +122,8 @@ class OunitProviderPreviewForm extends EntityForm {
 
     if (!isset($this->tempStoreKey)) {
       $this->tempStoreKey = implode('.', [
+        $this->entity->id(),
         self::JSONAPI_RESOURCE_TYPE,
-        $this->entity->id()
       ]);
     }
 
