@@ -28,7 +28,6 @@ class OunitAccessControlHandler extends EntityAccessControlHandler {
           return AccessResult::allowedIfHasPermission($account, 'view unpublished organizational unit entities');
         }
 
-
         return AccessResult::allowedIfHasPermission($account, 'view published organizational unit entities');
 
       case 'update':
@@ -50,6 +49,5 @@ class OunitAccessControlHandler extends EntityAccessControlHandler {
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
     return AccessResult::allowedIfHasPermission($account, 'add organizational unit entities');
   }
-
 
 }

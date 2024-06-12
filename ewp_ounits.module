@@ -7,9 +7,7 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Render\Element;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
 
@@ -74,11 +72,11 @@ function template_preprocess_ounit(array &$variables) {
   }
   /** @var OunitInterface $entity */
   $entity = $variables['elements']['#ounit'];
-  //provide the label
+  // provide the label
   $variables['label'] = $entity->label();
-  //provide the alias
+  // provide the alias
   $variables['url'] = $entity->toUrl()->toString();
-  //provide the view mode
+  // provide the view mode
   $variables['view_mode'] = $variables['elements']['#view_mode'];
 }
 
@@ -87,7 +85,7 @@ function template_preprocess_ounit(array &$variables) {
  */
 function ewp_ounits_jsonapi_entity_filter_access(EntityTypeInterface $entity_type, AccountInterface $account) {
   return ([
-    JSONAPI_FILTER_AMONG_ALL => AccessResult::allowed()
+    JSONAPI_FILTER_AMONG_ALL => AccessResult::allowed(),
   ]);
 }
 
@@ -98,6 +96,6 @@ function ewp_ounits_jsonapi_ounit_filter_access(EntityTypeInterface $entity_type
   return ([
     JSONAPI_FILTER_AMONG_ALL => AccessResult::allowedIfHasPermission($account, 'view unpublished organizational unit entities'),
     JSONAPI_FILTER_AMONG_PUBLISHED => AccessResult::allowedIfHasPermission($account, 'view published organizational unit entities'),
-    JSONAPI_FILTER_AMONG_OWN => AccessResult::allowedIfHasPermission($account, 'view published organizational unit entities')
+    JSONAPI_FILTER_AMONG_OWN => AccessResult::allowedIfHasPermission($account, 'view published organizational unit entities'),
   ]);
 }
