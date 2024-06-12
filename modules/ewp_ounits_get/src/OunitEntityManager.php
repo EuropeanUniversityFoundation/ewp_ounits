@@ -34,8 +34,6 @@ class OunitEntityManager implements OunitEntityManagerInterface {
    *   The entity type manager.
    * @param \Drupal\ewp_ounits_get\OunitFieldManagerInterface $ounit_field_manager
    *   The Organizational Unit field manager.
-   * @param \Drupal\Core\Render\RendererInterface $renderer
-   *   The renderer service.
    * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
    *   The string translation service.
    */
@@ -63,7 +61,9 @@ class OunitEntityManager implements OunitEntityManagerInterface {
   public function create(string $hei_id, array $ounit_data): ?array {
     $parent_hei = $this->heiIdExists($hei_id);
 
-    if (empty($parent_hei)) { return NULL; }
+    if (empty($parent_hei)) {
+      return NULL;
+    }
 
     $new = $this->entityTypeManager
       ->getStorage(self::ENTITY_TYPE)
@@ -106,15 +106,17 @@ class OunitEntityManager implements OunitEntityManagerInterface {
     $hei_exists = $this->heiIdExists($hei_id);
 
     if (!empty($hei_exists)) {
-      foreach ($hei_exists as $id => $hei) {
+      foreach ($hei_exists as $hei) {
         $hei_label = $hei->toLink()->toRenderable();
       }
 
       return $hei_label;
     }
 
-    return ['#markup' => $this->t('Institution ID: %hei_id', [
-      '%hei_id' => $hei_id])
+    return [
+      '#markup' => $this->t('Institution ID: %hei_id', [
+        '%hei_id' => $hei_id,
+      ]),
     ];
   }
 
@@ -132,7 +134,9 @@ class OunitEntityManager implements OunitEntityManagerInterface {
   public function ounitIdExists(string $hei_id, string $ounit_id): ?array {
     $parent_hei = $this->heiIdExists($hei_id);
 
-    if (empty($parent_hei)) { return NULL; }
+    if (empty($parent_hei)) {
+      return NULL;
+    }
 
     $ounit = $this->entityTypeManager
       ->getStorage(self::ENTITY_TYPE)
@@ -158,7 +162,9 @@ class OunitEntityManager implements OunitEntityManagerInterface {
   public function ounitCodeExists(string $hei_id, string $ounit_code): ?array {
     $parent_hei = $this->heiIdExists($hei_id);
 
-    if (empty($parent_hei)) { return NULL; }
+    if (empty($parent_hei)) {
+      return NULL;
+    }
 
     $ounit = $this->entityTypeManager
       ->getStorage(self::ENTITY_TYPE)

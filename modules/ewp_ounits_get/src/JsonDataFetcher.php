@@ -5,6 +5,7 @@ namespace Drupal\ewp_ounits_get;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\TempStore\SharedTempStoreFactory;
+use Drupal\Core\Utility\Error;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use GuzzleHttp\Client;
@@ -66,11 +67,11 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
     SharedTempStoreFactory $temp_store_factory,
     TranslationInterface $string_translation
   ) {
-    $this->httpClient         = $http_client;
-    $this->logger             = $logger_factory->get('ewp_ounits_get');
-    $this->moduleHandler      = $module_handler;
-    $this->tempStore          = $temp_store_factory->get('ewp_ounits_get');
-    $this->stringTranslation  = $string_translation;
+    $this->httpClient        = $http_client;
+    $this->logger            = $logger_factory->get('ewp_ounits_get');
+    $this->moduleHandler     = $module_handler;
+    $this->tempStore         = $temp_store_factory->get('ewp_ounits_get');
+    $this->stringTranslation = $string_translation;
   }
 
   /**
@@ -80,7 +81,7 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
    *   A key from the key_value_expire table.
    * @param string $endpoint
    *   The endpoint from which to fetch data.
-   * @param boolean $refresh
+   * @param bool $refresh
    *   Whether to force a refresh of the stored data.
    *
    * @return string|null
@@ -97,7 +98,7 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
       // Save the data to tempstore.
       $this->tempStore->set($temp_store_key, $raw);
       $message = $this->t("Loaded @key into temporary storage", [
-        '@key' => $temp_store_key
+        '@key' => $temp_store_key,
       ]);
       $this->logger->notice($message);
     }
@@ -129,10 +130,13 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
     try {
       $request = $this->httpClient->get($endpoint);
       $response = $request->getBody();
-    } catch (GuzzleException $e) {
+    }
+    catch (GuzzleException $e) {
+      /** @disregard P1013 */
       $response = $e->getResponse()->getBody();
-    } catch (Exception $e) {
-      watchdog_exception('ewp_ounits_get', $e->getMessage());
+    }
+    catch (\Exception $e) {
+      Error::logException($this->logger, $e);
     }
 
     // Extract the data from the Guzzle Stream.
@@ -158,10 +162,12 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
     try {
       $request = $this->httpClient->get($endpoint);
       $code = $request->getStatusCode();
-    } catch (GuzzleException $e) {
+    }
+    catch (GuzzleException $e) {
       $code = $e->getCode();
-    } catch (Exception $e) {
-      watchdog_exception('ewp_ounits_get', $e->getMessage());
+    }
+    catch (\Exception $e) {
+      Error::logException($this->logger, $e);
     }
 
     return $code;

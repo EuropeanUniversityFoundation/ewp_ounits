@@ -14,7 +14,7 @@ interface JsonDataFetcherInterface {
    *   A key from the key_value_expire table.
    * @param string $endpoint
    *   The endpoint from which to fetch data.
-   * @param boolean $refresh
+   * @param bool $refresh
    *   Whether to force a refresh of the stored data.
    *
    * @return string|null

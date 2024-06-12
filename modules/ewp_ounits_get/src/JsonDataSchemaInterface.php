@@ -13,16 +13,16 @@ interface JsonDataSchemaInterface {
   const JSONAPI_LINKS = 'links';
 
   // JSON:API data keys.
-  const JSONAPI_TYPE  = 'type';
-  const JSONAPI_ID    = 'id';
-  const JSONAPI_ATTR  = 'attributes';
-  const JSONAPI_REL   = 'relationships';
-  const JSONAPI_META  = 'meta';
+  const JSONAPI_TYPE = 'type';
+  const JSONAPI_ID   = 'id';
+  const JSONAPI_ATTR = 'attributes';
+  const JSONAPI_REL  = 'relationships';
+  const JSONAPI_META = 'meta';
   // JSON:API data objects may also include links objects.
 
   // JSON:API link keys.
-  const JSONAPI_SELF  = 'self';
-  const JSONAPI_HREF  = 'href';
+  const JSONAPI_SELF = 'self';
+  const JSONAPI_HREF = 'href';
 
   // Requirements.
   const REQUIRED_ATTR = '_required';

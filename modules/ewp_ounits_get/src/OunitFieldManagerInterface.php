@@ -26,10 +26,10 @@ interface OunitFieldManagerInterface {
   public function getJsonAttributes();
 
   /**
-  * Provides the JSON:API attributes as select options.
-  *
-  * @return array
-  *   The JSON:API attributes as select options.
+   * Provides the JSON:API attributes as select options.
+   *
+   * @return array
+   *   The JSON:API attributes as select options.
    */
   public function getAttributeOptions();
 

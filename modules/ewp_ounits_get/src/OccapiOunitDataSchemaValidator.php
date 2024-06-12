@@ -89,10 +89,11 @@ class OccapiOunitDataSchemaValidator implements JsonDataSchemaValidatorInterface
     if (!empty($missing_attr)) {
       $errors[] = $this->t('%id: Missing required data attributes %missing.', [
         '%id' => $data[JsonDataSchemaInterface::JSONAPI_ID],
-        '%missing' => implode(', ', $missing_attr)
+        '%missing' => implode(', ', $missing_attr),
       ]);
     }
 
     return $errors;
   }
+
 }

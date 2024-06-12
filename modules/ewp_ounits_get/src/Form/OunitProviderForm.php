@@ -118,7 +118,7 @@ class OunitProviderForm extends EntityForm {
 
     if ($code !== 200) {
       $message = $this->t('Failed to fetch data from %endpoint.', [
-        '%endpoint' => $collection_url
+        '%endpoint' => $collection_url,
       ]);
       $form_state->setErrorByName('collection_url', $message);
     }
@@ -133,8 +133,7 @@ class OunitProviderForm extends EntityForm {
     $refresh = $form_state->getValue('refresh');
 
     if ($refresh && !empty($collection_url)) {
-      $json_data = $this->jsonDataFetcher
-        ->load($temp_store_key, $collection_url, TRUE);
+      $this->jsonDataFetcher->load($temp_store_key, $collection_url, TRUE);
     }
 
     $result = parent::save($form, $form_state);

@@ -2,10 +2,8 @@
 
 namespace Drupal\ewp_ounits_get\Form;
 
-use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Render\RendererInterface;
 use Drupal\ewp_ounits_get\OunitEntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -17,6 +15,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class OunitProviderImportForm extends OunitProviderPreviewForm {
 
   /**
+   * The renderer service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
@@ -25,6 +30,7 @@ class OunitProviderImportForm extends OunitProviderPreviewForm {
     $instance->renderer = $container->get('renderer');
     return $instance;
   }
+
   /**
    * {@inheritdoc}
    */
@@ -58,11 +64,12 @@ class OunitProviderImportForm extends OunitProviderPreviewForm {
       ->ounitIdExists($this->entity->heiId(), $ounit_id) ?? [];
 
     if (!empty($ounit_id_exists)) {
-      foreach ($ounit_id_exists as $id => $entity) {
+      foreach ($ounit_id_exists as $entity) {
         $title = $entity->toLink();
       }
     }
     else {
+      /** @disregard P1013 */
       $title = $this->jsonDataProcessor->getResourceTitle($data);
     }
 

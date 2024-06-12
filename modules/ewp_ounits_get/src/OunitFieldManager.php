@@ -149,10 +149,10 @@ class OunitFieldManager implements OunitFieldManagerInterface {
   }
 
   /**
-  * Provides the JSON:API attributes as select options.
-  *
-  * @return array
-  *   The JSON:API attributes as select options.
+   * Provides the JSON:API attributes as select options.
+   *
+   * @return array
+   *   The JSON:API attributes as select options.
    */
   public function getAttributeOptions(): array {
     $options = [];
@@ -174,13 +174,13 @@ class OunitFieldManager implements OunitFieldManagerInterface {
   }
 
   /**
-  * Converts JSON:API attributes to Organizational Unit data.
-  *
-  * @param array $attributes
-  *   The JSON:API attributes.
-  *
-  * @return array
-  *   The Organizational Unit data.
+   * Converts JSON:API attributes to Organizational Unit data.
+   *
+   * @param array $attributes
+   *   The JSON:API attributes.
+   *
+   * @return array
+   *   The Organizational Unit data.
    */
   public function prepareOunitData(array $attributes): array {
     $data = [];
@@ -216,6 +216,7 @@ class OunitFieldManager implements OunitFieldManagerInterface {
               $num_only = (count($str_keys) === 0);
 
               if ($num_only) {
+                /** @disregard P1013 */
                 $sorted = $this->jsonDataProcessor
                   ->sortByLang($attributes[$src_field]);
 

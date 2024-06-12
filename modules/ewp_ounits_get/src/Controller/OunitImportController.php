@@ -30,12 +30,12 @@ class OunitImportController extends ControllerBase {
   const FIELD_CODE      = OunitEntityManagerInterface::FIELD_CODE;
   const REFERENCED_TYPE = OunitEntityManagerInterface::REFERENCED_TYPE;
 
-  const PROVIDER_TYPE   = 'ounit_provider';
+  const PROVIDER_TYPE = 'ounit_provider';
 
   /**
    * Parent Institution entity.
    *
-   * @var string
+   * @var array
    */
   protected $heiExists;
 
@@ -182,6 +182,7 @@ class OunitImportController extends ControllerBase {
 
     if (empty($error)) {
       $attributes = $this->ounitData[self::JSONAPI_ATTR_KEY];
+      /** @disregard P1013 */
       $entity_data = $this->ounitFields->prepareOunitData($attributes);
 
       foreach ($this->heiExists as $id => $entity) {
@@ -194,9 +195,9 @@ class OunitImportController extends ControllerBase {
         ->create($ounit_provider->heiId(), $entity_data);
 
       if (!empty($created)) {
-        foreach ($created as $idy => $entity) {
+        foreach ($created as $entity) {
           $message = $this->t('Imported %ounit', [
-            '%ounit' => $entity->toLink()->toString()
+            '%ounit' => $entity->toLink()->toString(),
           ]);
         }
         $this->messenger->addMessage($message);
@@ -225,7 +226,7 @@ class OunitImportController extends ControllerBase {
     if (!isset($this->tempStoreKey)) {
       $this->tempStoreKey = implode('.', [
         self::JSONAPI_RESOURCE_TYPE,
-        $ounit_provider->id()
+        $ounit_provider->id(),
       ]);
     }
 
@@ -255,7 +256,7 @@ class OunitImportController extends ControllerBase {
       ->ounitIdExists($ounit_provider->heiId(), $ounit_id);
 
     if (!empty($ounit_id_exists)) {
-      foreach ($ounit_id_exists as $id => $entity) {
+      foreach ($ounit_id_exists as $entity) {
         return $this->t('ID %ounit_id already exists: @link.', [
           '%ounit_id' => $ounit_provider->heiId(),
           '@link' => $entity->toLink(),

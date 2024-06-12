@@ -112,14 +112,17 @@ class OunitProviderListController extends ControllerBase {
 
     $rows = [];
 
-    foreach ($providers as $key => $provider) {
+    foreach ($providers as $provider) {
+      /** @disregard P1013 */
       $hei_exists = $this->ounitEntity
         ->heiIdExists($provider->heiId());
 
+      /** @disregard P1013 */
       $row = [
         self::ENTITY_TYPE => $provider->label(),
-        self::HEI_TYPE => ['data' => $this->ounitEntity
-          ->heiLabel($provider->heiId())],
+        self::HEI_TYPE => [
+          'data' => $this->ounitEntity->heiLabel($provider->heiId()),
+        ],
         self::OPERATION_LINKS => (!empty($hei_exists))
           ? $this->providerLoadLink($provider)
           : $this->providerEditLink($provider),
@@ -133,7 +136,7 @@ class OunitProviderListController extends ControllerBase {
       '#header' => $header,
       '#rows' => $rows,
       '#empty' => $this->t('No @providers to display.', [
-        '@providers' => $this->definition->getPluralLabel()
+        '@providers' => $this->definition->getPluralLabel(),
       ]),
     ];
 

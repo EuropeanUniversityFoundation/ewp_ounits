@@ -13,15 +13,15 @@ class JsonDataProcessor implements JsonDataProcessorInterface {
   const LINKS_KEY = JsonDataSchemaInterface::JSONAPI_LINKS;
 
   // JSON:API data keys.
-  const TYPE_KEY  = JsonDataSchemaInterface::JSONAPI_TYPE;
-  const ID_KEY    = JsonDataSchemaInterface::JSONAPI_ID;
-  const ATTR_KEY  = JsonDataSchemaInterface::JSONAPI_ATTR;
-  const REL_KEY   = JsonDataSchemaInterface::JSONAPI_REL;
-  const META_KEY  = JsonDataSchemaInterface::JSONAPI_META;
+  const TYPE_KEY = JsonDataSchemaInterface::JSONAPI_TYPE;
+  const ID_KEY   = JsonDataSchemaInterface::JSONAPI_ID;
+  const ATTR_KEY = JsonDataSchemaInterface::JSONAPI_ATTR;
+  const REL_KEY  = JsonDataSchemaInterface::JSONAPI_REL;
+  const META_KEY = JsonDataSchemaInterface::JSONAPI_META;
 
   // JSON:API link keys.
-  const SELF_KEY  = JsonDataSchemaInterface::JSONAPI_SELF;
-  const HREF_KEY  = JsonDataSchemaInterface::JSONAPI_HREF;
+  const SELF_KEY = JsonDataSchemaInterface::JSONAPI_SELF;
+  const HREF_KEY = JsonDataSchemaInterface::JSONAPI_HREF;
 
   // Drupal specific keys.
   const LABEL_KEY = 'label';
@@ -83,14 +83,14 @@ class JsonDataProcessor implements JsonDataProcessorInterface {
   }
 
   /**
-  * Get a resource title.
-  *
-  * @param array $resource
-  *   An array containing a JSON:API resource data.
-  *
-  * @return string
-  *   The title of the JSON:API resource.
-  */
+   * Get a resource title.
+   *
+   * @param array $resource
+   *   An array containing a JSON:API resource data.
+   *
+   * @return string
+   *   The title of the JSON:API resource.
+   */
   public function getResourceTitle(array $resource): string {
     $title = '';
 
@@ -111,7 +111,7 @@ class JsonDataProcessor implements JsonDataProcessorInterface {
 
     if (!empty($title_attribute)) {
       // Enforce an array of title objects.
-      $title_items = (! \array_key_exists(0, $title_attribute))
+      $title_items = (!\array_key_exists(0, $title_attribute))
         ? [$title_attribute]
         : $title_attribute;
 

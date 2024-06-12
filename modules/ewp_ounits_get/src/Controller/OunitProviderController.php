@@ -21,7 +21,7 @@ class OunitProviderController extends ControllerBase {
    */
   public function editFormTitle(EntityInterface $ounit_provider) {
     return $this->t('Edit %ounit_provider Organizational Unit provider', [
-      '%ounit_provider' => $ounit_provider->label()
+      '%ounit_provider' => $ounit_provider->label(),
     ]);
   }
 
@@ -36,7 +36,7 @@ class OunitProviderController extends ControllerBase {
    */
   public function previewFormTitle(EntityInterface $ounit_provider) {
     return $this->t('Preview %ounit_provider Organizational Unit provider', [
-      '%ounit_provider' => $ounit_provider->label()
+      '%ounit_provider' => $ounit_provider->label(),
     ]);
   }
 

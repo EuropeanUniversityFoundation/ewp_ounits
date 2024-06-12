@@ -3,12 +3,10 @@
 namespace Drupal\ewp_ounits_get\Form;
 
 use Drupal\Core\Entity\EntityForm;
-use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\ewp_ounits_get\JsonDataProcessor;
-use Drupal\ewp_ounits_get\OunitEntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -101,13 +99,15 @@ class OunitProviderPreviewForm extends EntityForm {
   public static function create(ContainerInterface $container) {
     // Instantiates this form class.
     $instance = parent::create($container);
-    $instance->ounitEntity          = $container->get('ewp_ounits_get.entity');
-    $instance->jsonDataFetcher      = $container->get('ewp_ounits_get.fetch');
-    $instance->jsonDataProcessor    = $container->get('ewp_ounits_get.json');
-    $instance->jsonDataValidator    = $container->get('ewp_ounits_get.validate.ounit.occapi');
-    $instance->loggerFactory        = $container->get('logger.factory');
-    $instance->logger = $instance->loggerFactory->get('ewp_ounits_get');
-    $instance->messenger            = $container->get('messenger');
+
+    $instance->ounitEntity       = $container->get('ewp_ounits_get.entity');
+    $instance->jsonDataFetcher   = $container->get('ewp_ounits_get.fetch');
+    $instance->jsonDataProcessor = $container->get('ewp_ounits_get.json');
+    $instance->jsonDataValidator = $container->get('ewp_ounits_get.validate.ounit.occapi');
+    $instance->loggerFactory     = $container->get('logger.factory');
+    $instance->logger            = $instance->loggerFactory->get('ewp_ounits_get');
+    $instance->messenger         = $container->get('messenger');
+
     return $instance;
   }
 
@@ -272,6 +272,7 @@ class OunitProviderPreviewForm extends EntityForm {
 
     $url_options = ['attributes' => ['target' => '_blank']];
 
+    /** @disregard P1013 */
     $row = [
       $this->jsonDataProcessor->getResourceType($data),
       $this->jsonDataProcessor->getResourceId($data),
