@@ -1,7 +1,7 @@
 name: 'EWP OUnits GET'
 type: module
 description: 'Provides an Organizational Unit provider configuration entity.'
-core_version_requirement: ^8 || ^9 || ^10
+core_version_requirement: ^8 || ^9 || ^10 || ^11
 package: 'EWP'
 configure: entity.ounit_provider.collection
 dependencies:
