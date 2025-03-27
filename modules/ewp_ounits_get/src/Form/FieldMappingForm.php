@@ -3,6 +3,7 @@
 namespace Drupal\ewp_ounits_get\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\ewp_ounits_get\OunitFieldManagerInterface;
@@ -25,14 +26,17 @@ class FieldMappingForm extends ConfigFormBase {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
+   * @param \Drupal\Core\Config\TypedConfigManagerInterface $typedConfigManager
+   *   The typed config manager.
    * @param \Drupal\ewp_ounits_get\OunitFieldManagerInterface $ounit_field_manager
    *   The Organizational Unit field manager.
    */
   public function __construct(
     ConfigFactoryInterface $config_factory,
+    TypedConfigManagerInterface $typedConfigManager,
     OunitFieldManagerInterface $ounit_field_manager
   ) {
-    parent::__construct($config_factory);
+    parent::__construct($config_factory, $typedConfigManager);
     $this->ounitFields = $ounit_field_manager;
   }
 
@@ -42,6 +46,7 @@ class FieldMappingForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('config.typed'),
       $container->get('ewp_ounits_get.fields'),
     );
   }
