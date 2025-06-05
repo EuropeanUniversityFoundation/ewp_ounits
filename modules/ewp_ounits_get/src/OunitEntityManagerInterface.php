@@ -19,7 +19,7 @@ interface OunitEntityManagerInterface {
    *
    * @param string $hei_id
    *   The Institution ID.
-   * @param string $ounit_data
+   * @param array $ounit_data
    *   The Organizational Unit data.
    *
    * @return array|null

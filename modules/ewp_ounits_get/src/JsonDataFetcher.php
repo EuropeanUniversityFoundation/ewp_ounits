@@ -9,7 +9,7 @@ use Drupal\Core\Utility\Error;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\ClientException;
 
 /**
  * JSON data fetcher.
@@ -65,7 +65,7 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
     LoggerChannelFactoryInterface $logger_factory,
     ModuleHandlerInterface $module_handler,
     SharedTempStoreFactory $temp_store_factory,
-    TranslationInterface $string_translation
+    TranslationInterface $string_translation,
   ) {
     $this->httpClient        = $http_client;
     $this->logger            = $logger_factory->get('ewp_ounits_get');
@@ -131,8 +131,7 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
       $request = $this->httpClient->get($endpoint);
       $response = $request->getBody();
     }
-    catch (GuzzleException $e) {
-      /** @disregard P1013 */
+    catch (ClientException $e) {
       $response = $e->getResponse()->getBody();
     }
     catch (\Exception $e) {
@@ -154,23 +153,23 @@ class JsonDataFetcher implements JsonDataFetcherInterface {
    * @param string $endpoint
    *   The external API endpoint.
    *
-   * @return int
+   * @return int|null
    *   The response code.
    */
-  public function getResponseCode(string $endpoint): int {
+  public function getResponseCode(string $endpoint): ?int {
     // Build the HTTP request.
     try {
       $request = $this->httpClient->get($endpoint);
       $code = $request->getStatusCode();
     }
-    catch (GuzzleException $e) {
+    catch (ClientException $e) {
       $code = $e->getCode();
     }
     catch (\Exception $e) {
       Error::logException($this->logger, $e);
     }
 
-    return $code;
+    return $code ?? NULL;
   }
 
 }

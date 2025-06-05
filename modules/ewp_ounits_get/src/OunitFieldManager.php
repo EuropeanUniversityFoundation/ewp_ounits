@@ -71,7 +71,7 @@ class OunitFieldManager implements OunitFieldManagerInterface {
     ConfigFactoryInterface $config_factory,
     EntityFieldManagerInterface $entity_field_manager,
     JsonDataProcessorInterface $json_data_processor,
-    JsonDataSchemaInterface $data_schema
+    JsonDataSchemaInterface $data_schema,
   ) {
     $this->configFactory      = $config_factory;
     $this->entityFieldManager = $entity_field_manager;
@@ -80,10 +80,7 @@ class OunitFieldManager implements OunitFieldManagerInterface {
   }
 
   /**
-   * Provides the entity fields for mapping.
-   *
-   * @return array
-   *   The entity fields.
+   * {@inheritdoc}
    */
   public function getEntityFields(): array {
     $fields = [];
@@ -128,10 +125,7 @@ class OunitFieldManager implements OunitFieldManagerInterface {
   }
 
   /**
-   * Provides the JSON:API attributes for mapping.
-   *
-   * @return array
-   *   The JSON:API attributes.
+   * {@inheritdoc}
    */
   public function getJsonAttributes(): array {
     $schema = $this->dataSchema->getSchema();
@@ -149,10 +143,7 @@ class OunitFieldManager implements OunitFieldManagerInterface {
   }
 
   /**
-   * Provides the JSON:API attributes as select options.
-   *
-   * @return array
-   *   The JSON:API attributes as select options.
+   * {@inheritdoc}
    */
   public function getAttributeOptions(): array {
     $options = [];
@@ -174,16 +165,11 @@ class OunitFieldManager implements OunitFieldManagerInterface {
   }
 
   /**
-   * Converts JSON:API attributes to Organizational Unit data.
-   *
-   * @param array $attributes
-   *   The JSON:API attributes.
-   *
-   * @return array
-   *   The Organizational Unit data.
+   * {@inheritdoc}
    */
   public function prepareOunitData(array $attributes): array {
     $data = [];
+    $tree = [];
 
     $fieldmap = $this->configFactory
       ->get('ewp_ounits_get.fieldmap')
@@ -216,7 +202,6 @@ class OunitFieldManager implements OunitFieldManagerInterface {
               $num_only = (count($str_keys) === 0);
 
               if ($num_only) {
-                /** @disregard P1013 */
                 $sorted = $this->jsonDataProcessor
                   ->sortByLang($attributes[$src_field]);
 

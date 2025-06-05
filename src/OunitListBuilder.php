@@ -35,9 +35,7 @@ class OunitListBuilder extends EntityListBuilder {
     /** @var \Drupal\ewp_ounits\Entity\Ounit $entity */
     $row['id'] = $entity->id();
     $row['label'] = $entity->toLink();
-    /** @disregard P1013 */
     if ($entity->hasField(self::PARENT_OUNIT)) {
-      /** @disregard P1013 */
       $parent_ounit = $entity->get(self::PARENT_OUNIT)->referencedEntities();
       $row[self::PARENT_OUNIT] = (!empty($parent_ounit))
         ? $parent_ounit[0]->toLink()
@@ -47,7 +45,6 @@ class OunitListBuilder extends EntityListBuilder {
       $row[self::PARENT_OUNIT] = $this->t('%u', ['%u' => self::UNDEFINED]);
     }
     if ($entity->hasField(self::PARENT_HEI)) {
-      /** @disregard P1013 */
       $parent_hei = $entity->get(self::PARENT_HEI)->referencedEntities();
       $row[self::PARENT_HEI] = (!empty($parent_hei))
         ? $parent_hei[0]->toLink()

@@ -16,7 +16,7 @@ interface JsonDataProcessorInterface {
    * @return array
    *   The actual data of the JSON:API resource.
    */
-  public function getResourceData(array $resource);
+  public function getResourceData(array $resource): array;
 
   /**
    * Get a resource type.
@@ -27,7 +27,7 @@ interface JsonDataProcessorInterface {
    * @return string
    *   The type of the JSON:API resource.
    */
-  public function getResourceType(array $resource);
+  public function getResourceType(array $resource): string;
 
   /**
    * Get a resource ID.
@@ -38,7 +38,18 @@ interface JsonDataProcessorInterface {
    * @return string
    *   The ID of the JSON:API resource.
    */
-  public function getResourceId(array $resource);
+  public function getResourceId(array $resource): string;
+
+  /**
+   * Get a resource title.
+   *
+   * @param array $resource
+   *   An array containing a JSON:API resource data.
+   *
+   * @return string
+   *   The title of the JSON:API resource.
+   */
+  public function getResourceTitle(array $resource): string;
 
   /**
    * Get a resource attribute by key.
@@ -51,7 +62,7 @@ interface JsonDataProcessorInterface {
    * @return array
    *   The value of the attribute keyed by attribute name.
    */
-  public function getResourceAttribute(array $resource, string $attribute);
+  public function getResourceAttribute(array $resource, string $attribute): array;
 
   /**
    * Get a resource link by key.
@@ -64,7 +75,7 @@ interface JsonDataProcessorInterface {
    * @return string
    *   The URL of the JSON:API link.
    */
-  public function getResourceLinkByType(array $resource, string $link_type);
+  public function getResourceLinkByType(array $resource, string $link_type): string;
 
   /**
    * Gather resource collection links.
@@ -75,6 +86,17 @@ interface JsonDataProcessorInterface {
    * @return array
    *   An array of resource 'self' links keyed by resource ID.
    */
-  public function getResourceLinks(array $collection);
+  public function getResourceLinks(array $collection): array;
+
+  /**
+   * Sort language typed data by preferred language.
+   *
+   * @param array $language_typed_data
+   *   An array containing language typed data.
+   *
+   * @return array
+   *   The sorted data.
+   */
+  public function sortByLang(array $language_typed_data): array;
 
 }

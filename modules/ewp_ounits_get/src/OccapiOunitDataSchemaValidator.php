@@ -33,7 +33,7 @@ class OccapiOunitDataSchemaValidator implements JsonDataSchemaValidatorInterface
    */
   public function __construct(
     JsonDataSchemaInterface $data_schema,
-    TranslationInterface $string_translation
+    TranslationInterface $string_translation,
   ) {
     $this->dataSchema        = $data_schema;
     $this->stringTranslation = $string_translation;

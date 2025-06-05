@@ -70,7 +70,7 @@ function template_preprocess_ounit(array &$variables) {
   foreach (Element::children($variables['elements']) as $key) {
     $variables['content'][$key] = $variables['elements'][$key];
   }
-  /** @var OunitInterface $entity */
+  /** @var \Drupal\ewp_ounits\Entity\OunitInterface $entity */
   $entity = $variables['elements']['#ounit'];
   // provide the label
   $variables['label'] = $entity->label();

@@ -24,30 +24,23 @@ class OunitProviderPreviewForm extends EntityForm {
   const COLLECTION_URL = 'collection_url';
 
   /**
-   * Corresponding Institution entity.
-   *
-   * @var string
-   */
-  protected $heiExists;
-
-  /**
    * SharedTempStore key.
    *
-   * @var string
+   * @var string|null
    */
   protected $tempStoreKey;
 
   /**
    * JSON:API endpoint.
    *
-   * @var string
+   * @var string|null
    */
   protected $endpoint;
 
   /**
    * Organizational Unit data.
    *
-   * @var array
+   * @var array|null
    */
   protected $ounitData;
 
@@ -115,11 +108,6 @@ class OunitProviderPreviewForm extends EntityForm {
    * Set data for persistency.
    */
   public function setData() {
-    if (!isset($this->heiExists)) {
-      $this->heiExists = $this->ounitEntity
-        ->heiIdExists($this->entity->heiId());
-    }
-
     if (!isset($this->tempStoreKey)) {
       $this->tempStoreKey = implode('.', [
         $this->entity->id(),
@@ -232,7 +220,7 @@ class OunitProviderPreviewForm extends EntityForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
-    return $this->entity;
+    return $this->entity->id();
   }
 
   /**
@@ -272,7 +260,6 @@ class OunitProviderPreviewForm extends EntityForm {
 
     $url_options = ['attributes' => ['target' => '_blank']];
 
-    /** @disregard P1013 */
     $row = [
       $this->jsonDataProcessor->getResourceType($data),
       $this->jsonDataProcessor->getResourceId($data),

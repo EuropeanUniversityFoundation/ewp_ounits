@@ -19,7 +19,6 @@ interface JsonDataSchemaInterface {
   const JSONAPI_REL  = 'relationships';
   const JSONAPI_META = 'meta';
   // JSON:API data objects may also include links objects.
-
   // JSON:API link keys.
   const JSONAPI_SELF = 'self';
   const JSONAPI_HREF = 'href';

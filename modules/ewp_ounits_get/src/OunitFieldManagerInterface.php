@@ -15,7 +15,7 @@ interface OunitFieldManagerInterface {
    * @return array
    *   The entity fields.
    */
-  public function getEntityFields();
+  public function getEntityFields(): array;
 
   /**
    * Provides the JSON:API attributes for mapping.
@@ -23,7 +23,7 @@ interface OunitFieldManagerInterface {
    * @return array
    *   The JSON:API attributes.
    */
-  public function getJsonAttributes();
+  public function getJsonAttributes(): array;
 
   /**
    * Provides the JSON:API attributes as select options.
@@ -31,6 +31,17 @@ interface OunitFieldManagerInterface {
    * @return array
    *   The JSON:API attributes as select options.
    */
-  public function getAttributeOptions();
+  public function getAttributeOptions(): array;
+
+  /**
+   * Converts JSON:API attributes to Organizational Unit data.
+   *
+   * @param array $attributes
+   *   The JSON:API attributes.
+   *
+   * @return array
+   *   The Organizational Unit data.
+   */
+  public function prepareOunitData(array $attributes): array;
 
 }

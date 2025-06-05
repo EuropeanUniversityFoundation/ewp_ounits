@@ -51,6 +51,8 @@ class OunitHtmlRouteProvider extends AdminHtmlRouteProvider {
 
       return $route;
     }
+
+    return NULL;
   }
 
 }

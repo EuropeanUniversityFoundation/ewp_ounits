@@ -34,7 +34,7 @@ class FieldMappingForm extends ConfigFormBase {
   public function __construct(
     ConfigFactoryInterface $config_factory,
     TypedConfigManagerInterface $typedConfigManager,
-    OunitFieldManagerInterface $ounit_field_manager
+    OunitFieldManagerInterface $ounit_field_manager,
   ) {
     parent::__construct($config_factory, $typedConfigManager);
     $this->ounitFields = $ounit_field_manager;
@@ -120,13 +120,6 @@ class FieldMappingForm extends ConfigFormBase {
     }
 
     return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
   }
 
   /**

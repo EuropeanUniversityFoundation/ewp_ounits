@@ -69,7 +69,6 @@ class OunitProviderImportForm extends OunitProviderPreviewForm {
       }
     }
     else {
-      /** @disregard P1013 */
       $title = $this->jsonDataProcessor->getResourceTitle($data);
     }
 

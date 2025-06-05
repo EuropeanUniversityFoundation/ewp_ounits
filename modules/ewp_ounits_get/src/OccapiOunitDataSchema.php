@@ -10,7 +10,7 @@ class OccapiOunitDataSchema implements JsonDataSchemaInterface {
   /**
    * The JSON:API data schema.
    *
-   * @var array
+   * @var array|null
    */
   protected $schema;
 

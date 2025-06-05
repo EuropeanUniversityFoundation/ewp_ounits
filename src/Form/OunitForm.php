@@ -36,7 +36,6 @@ class OunitForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    /** @var \Drupal\ewp_ounits\Entity\Ounit $entity */
     $form = parent::buildForm($form, $form_state);
 
     // Prepare changes to the ounit_id widget.
@@ -57,11 +56,12 @@ class OunitForm extends ContentEntityForm {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     if (empty($form_state->getValue(self::OUNIT_ID)[0]['value'])) {
-      $ounit_id_value = $this->entity->uuid->value;
+      /** @var \Drupal\ewp_ounits\Entity\Ounit $this->entity */
+      $ounit_id_value = $this->entity->get('uuid')->getValue()[0]['value'];
       $form_state->setValue([self::OUNIT_ID, 0, 'value'], $ounit_id_value);
     }
 
-    parent::validateForm($form, $form_state);
+    return parent::validateForm($form, $form_state);
   }
 
   /**
@@ -86,9 +86,12 @@ class OunitForm extends ContentEntityForm {
             '%label' => $entity->label(),
           ]));
     }
-    $form_state->setRedirect('entity.ounit.canonical', [
-      'ounit' => $entity->id(),
-    ]);
+
+    $id = $entity->id();
+
+    $form_state->setRedirect('entity.ounit.canonical', ['ounit' => $id]);
+
+    return $id;
   }
 
 }

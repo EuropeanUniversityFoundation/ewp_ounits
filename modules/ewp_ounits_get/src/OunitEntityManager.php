@@ -40,7 +40,7 @@ class OunitEntityManager implements OunitEntityManagerInterface {
   public function __construct(
     EntityTypeManagerInterface $entity_type_manager,
     OunitFieldManagerInterface $ounit_field_manager,
-    TranslationInterface $string_translation
+    TranslationInterface $string_translation,
   ) {
     $this->entityTypeManager = $entity_type_manager;
     $this->ounitFields       = $ounit_field_manager;

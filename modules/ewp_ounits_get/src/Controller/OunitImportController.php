@@ -35,28 +35,28 @@ class OunitImportController extends ControllerBase {
   /**
    * Parent Institution entity.
    *
-   * @var array
+   * @var array|null
    */
   protected $heiExists;
 
   /**
    * SharedTempStore key.
    *
-   * @var string
+   * @var string|null
    */
   protected $tempStoreKey;
 
   /**
    * JSON:API endpoint.
    *
-   * @var string
+   * @var string|null
    */
   protected $endpoint;
 
   /**
    * Organizational Unit data.
    *
-   * @var array
+   * @var array|null
    */
   protected $ounitData;
 
@@ -144,7 +144,7 @@ class OunitImportController extends ControllerBase {
     OunitEntityManagerInterface $ounit_entity,
     OunitFieldManagerInterface $ounit_fields,
     TranslationInterface $string_translation,
-    UrlMatcherInterface $access_unaware_router
+    UrlMatcherInterface $access_unaware_router,
   ) {
     $this->entityTypeManager   = $entity_type_manager;
     $this->jsonDataFetcher     = $json_data_fetcher;
@@ -182,7 +182,6 @@ class OunitImportController extends ControllerBase {
 
     if (empty($error)) {
       $attributes = $this->ounitData[self::JSONAPI_ATTR_KEY];
-      /** @disregard P1013 */
       $entity_data = $this->ounitFields->prepareOunitData($attributes);
 
       foreach ($this->heiExists as $id => $entity) {

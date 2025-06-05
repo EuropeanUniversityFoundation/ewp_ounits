@@ -21,6 +21,8 @@ class OunitProviderListController extends ControllerBase {
 
   /**
    * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxy
    */
   protected $currentUser;
 
@@ -68,7 +70,7 @@ class OunitProviderListController extends ControllerBase {
     AccountProxy $current_user,
     EntityTypeManagerInterface $entity_type_manager,
     OunitEntityManagerInterface $ounit_entity,
-    TranslationInterface $string_translation
+    TranslationInterface $string_translation,
   ) {
     $this->currentUser       = $current_user;
     $this->entityTypeManager = $entity_type_manager;
@@ -113,11 +115,10 @@ class OunitProviderListController extends ControllerBase {
     $rows = [];
 
     foreach ($providers as $provider) {
-      /** @disregard P1013 */
+      /** @var \Drupal\ewp_ounits_get\OunitProviderInterface $provider */
       $hei_exists = $this->ounitEntity
         ->heiIdExists($provider->heiId());
 
-      /** @disregard P1013 */
       $row = [
         self::ENTITY_TYPE => $provider->label(),
         self::HEI_TYPE => [
