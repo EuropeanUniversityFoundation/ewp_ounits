@@ -38,15 +38,17 @@ class OunitForm extends ContentEntityForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
 
-    // Prepare changes to the ounit_id widget.
-    $ounit_id_value = $form[self::OUNIT_ID]['widget'][0]['value'];
-    // Remove the requirement from the form element.
-    $ounit_id_value['#required'] = FALSE;
-    // Set a placeholder indicating the UUID fallback.
-    $placeholder = $this->t('Leave empty to use UUID as OUnit ID');
-    $ounit_id_value['#attributes']['placeholder'] = $placeholder;
-    // Apply the changes to the widget.
-    $form[self::OUNIT_ID]['widget'][0]['value'] = $ounit_id_value;
+    if (array_key_exists(self::OUNIT_ID, $form)) {
+      // Prepare changes to the ounit_id widget.
+      $ounit_id_value = $form[self::OUNIT_ID]['widget'][0]['value'];
+      // Remove the requirement from the form element.
+      $ounit_id_value['#required'] = FALSE;
+      // Set a placeholder indicating the UUID fallback.
+      $placeholder = $this->t('Leave empty to use UUID as OUnit ID');
+      $ounit_id_value['#attributes']['placeholder'] = $placeholder;
+      // Apply the changes to the widget.
+      $form[self::OUNIT_ID]['widget'][0]['value'] = $ounit_id_value;
+    }
 
     return $form;
   }
