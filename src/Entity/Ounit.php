@@ -51,6 +51,10 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *   },
  *   field_ui_base_route = "ounit.settings",
  *   common_reference_target = TRUE,
+ *   constraints = {
+ *     "UniqueOunitCodePerInstitution" = {},
+ *     "UniqueOunitIdPerInstitution" = {},
+ *   }
  * )
  */
 class Ounit extends ContentEntityBase implements OunitInterface {
