@@ -4,10 +4,16 @@ dependencies:
   config:
     - field.storage.ounit.parent_ounit
   module:
+    - entity_reference_validators
     - ewp_ounits
   enforced:
     module:
       - ewp_ounits
+third_party_settings:
+  entity_reference_validators:
+    circular_reference: true
+    circular_reference_deep: true
+    duplicate_reference: false
 id: ounit.ounit.parent_ounit
 field_name: parent_ounit
 entity_type: ounit
@@ -24,5 +30,7 @@ settings:
     target_bundles: null
     sort:
       field: _none
+      direction: ASC
     auto_create: false
 field_type: entity_reference
+
