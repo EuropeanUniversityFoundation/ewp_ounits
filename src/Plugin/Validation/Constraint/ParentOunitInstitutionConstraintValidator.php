@@ -60,16 +60,19 @@ final class ParentOunitInstitutionConstraintValidator extends ConstraintValidato
       );
     }
 
-    $parent_ounit = $entity->get(self::PARENT_OUNIT)->target_id;
-    $parent_hei = $entity->get(self::PARENT_HEI)->target_id;
+    $parent_ounit_id = $entity->get(self::PARENT_OUNIT)->target_id;
+    $parent_hei_id = $entity->get(self::PARENT_HEI)->target_id;
 
-    if (!empty($parent_ounit)) {
-      $parent_ounit_parent_hei = $this->entityTypeManager
+    if (!empty($parent_ounit_id)) {
+      /** @var \Drupal\ewp_ounits\Entity\OunitInterface $parent_ounit */
+      $parent_ounit = $this->entityTypeManager
         ->getStorage(self::OUNIT)
-        ->load($parent_ounit)
+        ->load($parent_ounit_id);
+
+      $parent_ounit_parent_hei_id = $parent_ounit
         ->get(self::PARENT_HEI)->target_id;
 
-      if ($parent_ounit_parent_hei !== $parent_hei) {
+      if ((int) $parent_ounit_parent_hei_id !== (int) $parent_hei_id) {
         $this->context->buildViolation($constraint->message)
           ->atPath(self::PARENT_OUNIT)
           ->addViolation();
