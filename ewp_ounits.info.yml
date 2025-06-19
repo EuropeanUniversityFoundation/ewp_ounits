@@ -4,6 +4,7 @@ description: 'Drupal implementation of the EWP Organizational Units API'
 core_version_requirement: ^10.3 || ^11
 package: 'EWP'
 dependencies:
+  - entity_reference_validators:entity_reference_validators
   - ewp_core:ewp_core
   - ewp_flexible_address:ewp_flexible_address
   - ewp_phone_number:ewp_phone_number
