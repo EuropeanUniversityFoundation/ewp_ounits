@@ -21,3 +21,12 @@ view unpublished organizational unit entities:
 access organizational unit entities overview:
   title: 'Access the Organizational Units overview page'
   description: 'Should be combined with Access the Content overview page.'
+
+view organizational unit entities revision:
+  title: 'View Organizational Unit entities revision'
+
+revert organizational unit entities revision:
+  title: 'Revert Organizational Unit entities revision'
+
+delete organizational unit entities revision:
+  title: 'Delete Organizational Unit entities revision'
