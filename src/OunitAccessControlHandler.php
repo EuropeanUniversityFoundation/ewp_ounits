@@ -37,6 +37,19 @@ class OunitAccessControlHandler extends EntityAccessControlHandler {
       case 'delete':
 
         return AccessResult::allowedIfHasPermission($account, 'delete organizational unit entities');
+
+      case 'delete revision':
+
+        return AccessResult::allowedIfHasPermission($account, 'delete organizational unit entities revision');
+
+      case 'view all revisions':
+      case 'view revision':
+
+        return AccessResult::allowedIfHasPermissions($account, ['view organizational unit entities revision', 'view published organizational unit entities']);
+
+      case 'revert':
+
+        return AccessResult::allowedIfHasPermissions($account, ['revert organizational unit entities revision', 'edit organizational unit entities']);
     }
 
     // Unknown operation, no opinion.
