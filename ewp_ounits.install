@@ -48,15 +48,28 @@ function ewp_ounits_update_8101() {
  * Convert 'ounit' entity to revisionable and apply all annotation updates.
  */
 function ewp_ounits_update_10602(&$sandbox) {
+  $database = \Drupal::database();
+  $schema = $database->schema();
   $update_manager = \Drupal::entityDefinitionUpdateManager();
-  $entity_type = $update_manager->getEntityType('ounit');
 
-  // 1. Update Entity Type Definition with all new Annotation properties.
+  // 1. PRE-FLIGHT: Add the 'uid' column manually if it doesn't exist.
+  // This prevents the "Column 'uid' cannot be null" error during migration.
+  if (!$schema->fieldExists('ounit', 'uid')) {
+    $schema->addField('ounit', 'uid', [
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0, // Assign to Anonymous (0) or Admin (1)
+      'description' => 'The ID of the target entity.',
+    ]);
+  }
+
+  // 2. Prepare the Entity Type Definition.
+  $entity_type = $update_manager->getEntityType('ounit');
   $entity_type->set('revision_table', 'ounit_revision');
   $entity_type->set('revisionable', TRUE);
   $entity_type->set('show_revision_ui', TRUE);
 
-  // Update entity keys (includes the new 'revision' and 'owner' keys).
   $entity_type->set('entity_keys', [
     'id' => 'id',
     'revision' => 'revision_id',
@@ -65,34 +78,29 @@ function ewp_ounits_update_10602(&$sandbox) {
     'langcode' => 'langcode',
     'published' => 'status',
     'owner' => 'uid',
-    'revision_default' => 'revision_default'
+    'revision_default' => 'revision_default',
   ]);
 
-  // Add the revision metadata keys.
   $entity_type->set('revision_metadata_keys', [
     'revision_user' => 'revision_uid',
     'revision_created' => 'revision_timestamp',
     'revision_log_message' => 'revision_log',
-    'revision_default' => 'revision_default'
+    'revision_default' => 'revision_default',
   ]);
 
-  // 2. Load all current field storage definitions.
-  // We fetch the "live" definitions from the code to ensure the new fields
-  // (uid, revision_log, etc.) are included in the update process.
+  // 3. Get fresh field definitions from the class.
   $field_storage_definitions = \Drupal::service('entity_field.manager')->getFieldStorageDefinitions('ounit');
 
-  // 3. Mark existing fields as revisionable in the definitions.
-  $revisionable_fields = ['label', 'status', 'uid', 'changed'];
-  foreach ($revisionable_fields as $field_name) {
+  // 4. Ensure fields are marked revisionable.
+  foreach (['label', 'status', 'uid', 'changed'] as $field_name) {
     if (isset($field_storage_definitions[$field_name])) {
       $field_storage_definitions[$field_name]->setRevisionable(TRUE);
     }
   }
 
-  // 4. Execute the schema conversion.
-  // This method creates 'ounit_revision', adds 'revision_id' to 'ounit',
-  // and migrates any existing data into the new revision architecture.
+  // 5. Execute the Schema Conversion.
+  // Now that the 'uid' column exists and has a default value, this will succeed.
   $update_manager->updateFieldableEntityType($entity_type, $field_storage_definitions, $sandbox);
 
-  return new TranslatableMarkup('Organizational Unit entity type has been converted to revisionable.');
+  return t('Ounit entity type has been converted to revisionable and existing data migrated.');
 }
