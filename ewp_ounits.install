@@ -48,24 +48,10 @@ function ewp_ounits_update_8101() {
  * Convert 'ounit' entity to revisionable and apply all annotation updates.
  */
 function ewp_ounits_update_10602(&$sandbox) {
-  $database = \Drupal::database();
-  $schema = $database->schema();
   $update_manager = \Drupal::entityDefinitionUpdateManager();
-
-  // 1. PRE-FLIGHT: Add the 'uid' column manually if it doesn't exist.
-  // This prevents the "Column 'uid' cannot be null" error during migration.
-  if (!$schema->fieldExists('ounit', 'uid')) {
-    $schema->addField('ounit', 'uid', [
-      'type' => 'int',
-      'unsigned' => TRUE,
-      'not null' => TRUE,
-      'default' => 0, // Assign to Anonymous (0) or Admin (1)
-      'description' => 'The ID of the target entity.',
-    ]);
-  }
-
-  // 2. Prepare the Entity Type Definition.
   $entity_type = $update_manager->getEntityType('ounit');
+
+  // 1. Update Annotation properties.
   $entity_type->set('revision_table', 'ounit_revision');
   $entity_type->set('revisionable', TRUE);
   $entity_type->set('show_revision_ui', TRUE);
@@ -88,19 +74,25 @@ function ewp_ounits_update_10602(&$sandbox) {
     'revision_default' => 'revision_default',
   ]);
 
-  // 3. Get fresh field definitions from the class.
+  // 2. Fetch storage definitions.
   $field_storage_definitions = \Drupal::service('entity_field.manager')->getFieldStorageDefinitions('ounit');
 
-  // 4. Ensure fields are marked revisionable.
-  foreach (['label', 'status', 'uid', 'changed'] as $field_name) {
+  // 3. CRITICAL: Provide an initial value for the 'uid' field.
+  // This tells the Update Manager: "For all existing rows, set uid to 1".
+  if (isset($field_storage_definitions['uid'])) {
+    $field_storage_definitions['uid']->setInitialValue(1); // 1 for Admin
+    $field_storage_definitions['uid']->setRevisionable(TRUE);
+  }
+
+  // 4. Mark other fields as revisionable.
+  foreach (['label', 'status', 'changed'] as $field_name) {
     if (isset($field_storage_definitions[$field_name])) {
       $field_storage_definitions[$field_name]->setRevisionable(TRUE);
     }
   }
 
   // 5. Execute the Schema Conversion.
-  // Now that the 'uid' column exists and has a default value, this will succeed.
   $update_manager->updateFieldableEntityType($entity_type, $field_storage_definitions, $sandbox);
 
-  return t('Ounit entity type has been converted to revisionable and existing data migrated.');
+  return t('Ounit entity type has been converted to revisionable.');
 }

@@ -133,6 +133,10 @@ class Ounit extends RevisionableContentEntityBase implements OunitInterface {
     return $this;
   }
 
+  public function getDefaultEntityOwner() {
+    return 0;
+  }
+
   /**
    * {@inheritdoc}
    */
