@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Increase the max length of the entity label to 255 characters.
@@ -19,8 +20,8 @@ function ewp_ounits_update_8101() {
   \Drupal::database()->schema()->changeField('ounit', 'label', 'label', $field_spec);
 
   $definition = BaseFieldDefinition::create('string')
-    ->setLabel(t('Label'))
-    ->setDescription(t('The internal label of the Organizational Unit entity.'))
+    ->setLabel(new TranslatableMarkup('Label'))
+    ->setDescription(new TranslatableMarkup('The internal label of the Organizational Unit entity.'))
     ->setSettings([
       'max_length' => 255,
       'text_processing' => 0,
@@ -41,4 +42,57 @@ function ewp_ounits_update_8101() {
 
   \Drupal::entityDefinitionUpdateManager()
     ->installFieldStorageDefinition('label', 'ounit', 'ounit', $definition);
+}
+
+/**
+ * Convert 'ounit' entity to revisionable and apply all annotation updates.
+ */
+function ewp_ounits_update_10602(&$sandbox) {
+  $update_manager = \Drupal::entityDefinitionUpdateManager();
+  $entity_type = $update_manager->getEntityType('ounit');
+
+  // 1. Update Entity Type Definition with all new Annotation properties.
+  $entity_type->set('revision_table', 'ounit_revision');
+  $entity_type->set('revisionable', TRUE);
+  $entity_type->set('show_revision_ui', TRUE);
+
+  // Update entity keys (includes the new 'revision' and 'owner' keys).
+  $entity_type->set('entity_keys', [
+    'id' => 'id',
+    'revision' => 'revision_id',
+    'label' => 'label',
+    'uuid' => 'uuid',
+    'langcode' => 'langcode',
+    'published' => 'status',
+    'owner' => 'uid',
+    'revision_default' => 'revision_default'
+  ]);
+
+  // Add the revision metadata keys.
+  $entity_type->set('revision_metadata_keys', [
+    'revision_user' => 'revision_uid',
+    'revision_created' => 'revision_timestamp',
+    'revision_log_message' => 'revision_log',
+    'revision_default' => 'revision_default'
+  ]);
+
+  // 2. Load all current field storage definitions.
+  // We fetch the "live" definitions from the code to ensure the new fields
+  // (uid, revision_log, etc.) are included in the update process.
+  $field_storage_definitions = \Drupal::service('entity_field.manager')->getFieldStorageDefinitions('ounit');
+
+  // 3. Mark existing fields as revisionable in the definitions.
+  $revisionable_fields = ['label', 'status', 'uid', 'changed'];
+  foreach ($revisionable_fields as $field_name) {
+    if (isset($field_storage_definitions[$field_name])) {
+      $field_storage_definitions[$field_name]->setRevisionable(TRUE);
+    }
+  }
+
+  // 4. Execute the schema conversion.
+  // This method creates 'ounit_revision', adds 'revision_id' to 'ounit',
+  // and migrates any existing data into the new revision architecture.
+  $update_manager->updateFieldableEntityType($entity_type, $field_storage_definitions, $sandbox);
+
+  return new TranslatableMarkup('Organizational Unit entity type has been converted to revisionable.');
 }
