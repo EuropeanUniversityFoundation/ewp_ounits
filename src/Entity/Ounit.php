@@ -133,6 +133,9 @@ class Ounit extends RevisionableContentEntityBase implements OunitInterface {
     return $this;
   }
 
+  /**
+   * Returns Anonymous as default owner.
+   */
   public function getDefaultEntityOwner() {
     return 0;
   }
@@ -170,7 +173,7 @@ class Ounit extends RevisionableContentEntityBase implements OunitInterface {
       ->setRequired(TRUE)
       ->setRevisionable(TRUE);
 
-    /** @var BaseFieldDefinition[] $fields */
+    /** @var Drupal\Core\Field\BaseFieldDefinition[] $fields */
     $fields['status']
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',

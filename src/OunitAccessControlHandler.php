@@ -45,11 +45,17 @@ class OunitAccessControlHandler extends EntityAccessControlHandler {
       case 'view all revisions':
       case 'view revision':
 
-        return AccessResult::allowedIfHasPermissions($account, ['view organizational unit entities revision', 'view published organizational unit entities']);
+        return AccessResult::allowedIfHasPermissions($account, [
+          'view organizational unit entities revision',
+          'view published organizational unit entities',
+        ]);
 
       case 'revert':
 
-        return AccessResult::allowedIfHasPermissions($account, ['revert organizational unit entities revision', 'edit organizational unit entities']);
+        return AccessResult::allowedIfHasPermissions($account, [
+          'revert organizational unit entities revision',
+          'edit organizational unit entities',
+        ]);
     }
 
     // Unknown operation, no opinion.

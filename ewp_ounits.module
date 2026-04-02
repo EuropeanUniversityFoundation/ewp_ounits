@@ -72,11 +72,11 @@ function template_preprocess_ounit(array &$variables) {
   }
   /** @var \Drupal\ewp_ounits\Entity\OunitInterface $entity */
   $entity = $variables['elements']['#ounit'];
-  // provide the label
+  // Provide the label.
   $variables['label'] = $entity->label();
-  // provide the alias
+  // Provide the alias.
   $variables['url'] = $entity->toUrl()->toString();
-  // provide the view mode
+  // Provide the view mode.
   $variables['view_mode'] = $variables['elements']['#view_mode'];
 }
 

@@ -45,7 +45,7 @@ function ewp_ounits_update_8101() {
 }
 
 /**
- * Adds the 'uid' field for ounits to have owners
+ * Adds the 'uid' field for ounits to have owners.
  */
 function ewp_ounits_update_10602() {
   $update_manager = \Drupal::entityDefinitionUpdateManager();
@@ -107,7 +107,7 @@ function ewp_ounits_update_10603(&$sandbox) {
     $field_storage_definitions['uid']->setRevisionable(TRUE);
   }
 
-  // Mark other core fields as revisionable to ensure they move to the new table.
+  // Mark other core fields as revisionable to ensure moving to the new table.
   $revisionable_fields = ['label', 'status', 'changed'];
   foreach ($revisionable_fields as $field_name) {
     if (isset($field_storage_definitions[$field_name])) {
@@ -122,8 +122,8 @@ function ewp_ounits_update_10603(&$sandbox) {
 
   $database = \Drupal::database();
 
-  // Copy the 'changed' time from the base table into the revision table
-  $query = $database->query("
+  // Copy the 'changed' time from the base table into the revision table.
+  $database->query("
     UPDATE {ounit_revision} r
     INNER JOIN {ounit} b ON r.id = b.id
     SET r.revision_timestamp = b.changed
