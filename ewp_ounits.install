@@ -45,29 +45,37 @@ function ewp_ounits_update_8101() {
 }
 
 /**
- * Convert 'ounit' entity to revisionable and apply all annotation updates.
+ * Adds the 'uid' field for ounits to have owners
  */
-function ewp_ounits_update_10602(&$sandbox) {
-    $database = \Drupal::database();
+function ewp_ounits_update_10602() {
   $update_manager = \Drupal::entityDefinitionUpdateManager();
+  $storage_definitions = \Drupal::service('entity_field.manager')->getFieldStorageDefinitions('ounit');
 
-  // 1. MANUAL DATABASE FIX:
-  // Add the 'uid' column directly to the existing table so it's not NULL
-  // when the UpdateManager tries to copy the data.
-  if (!$database->schema()->fieldExists('ounit', 'uid')) {
-    $database->schema()->addField('ounit', 'uid', [
-      'type' => 'int',
-      'unsigned' => TRUE,
-      'not null' => TRUE,
-      'default' => 0,
-      'description' => 'The entity owner.',
-    ]);
+  if (isset($storage_definitions['uid'])) {
+    // We install the field definition as it exists in your new Ounit class.
+    // We provide an initial value of 0 (Anonymous) to satisfy 'NOT NULL'.
+    $update_manager->installFieldStorageDefinition('uid', 'ounit', 'ewp_ounits', $storage_definitions['uid']);
+
+    // Explicitly update any NULLs to 0 just in case.
+    \Drupal::database()->update('ounit')
+      ->fields(['uid' => 0])
+      ->condition('uid', NULL, 'IS NULL')
+      ->execute();
   }
 
-  // 2. Prepare the Entity Definition.
+  \Drupal::logger('ewp_ounits')->notice(t('Added uid field to ounit table successfully'));
+}
+
+/**
+ * Convert 'ounit' entity to revisionable and apply all annotation updates.
+ */
+function ewp_ounits_update_10603(&$sandbox) {
+  $update_manager = \Drupal::entityDefinitionUpdateManager();
+
+  // 1. Retrieve and prepare the current entity type definition.
   $entity_type = $update_manager->getEntityType('ounit');
 
-  // Set all the new revisionable properties.
+  // Apply the new revisionable and owner configurations.
   $entity_type->set('revision_table', 'ounit_revision');
   $entity_type->set('revisionable', TRUE);
   $entity_type->set('show_revision_ui', TRUE);
@@ -80,7 +88,7 @@ function ewp_ounits_update_10602(&$sandbox) {
     'langcode' => 'langcode',
     'published' => 'status',
     'owner' => 'uid',
-    'revision_default' => 'revision_default', // Critical for storage
+    'revision_default' => 'revision_default',
   ]);
 
   $entity_type->set('revision_metadata_keys', [
@@ -90,21 +98,49 @@ function ewp_ounits_update_10602(&$sandbox) {
     'revision_default' => 'revision_default',
   ]);
 
-  // 3. Get the storage definitions from your new Ounit class.
+  // 2. Fetch storage definitions directly from your new Ounit class.
+  // This ensures the manager "sees" the new uid and revision fields.
   $field_storage_definitions = \Drupal::service('entity_field.manager')->getFieldStorageDefinitions('ounit');
 
-  // 4. Force fields to be revisionable.
-  $to_revision = ['label', 'status', 'uid', 'changed'];
-  foreach ($to_revision as $field_name) {
+  // 3. CRITICAL: Set the initial value for the new 'uid' field.
+  // This tells Drupal to use '0' (Anonymous) or '1' (Admin) for all existing rows.
+  if (isset($field_storage_definitions['uid'])) {
+    $field_storage_definitions['uid']->setInitialValue(0);
+    $field_storage_definitions['uid']->setRevisionable(TRUE);
+  }
+
+  // 4. Mark other core fields as revisionable to ensure they move to the new table.
+  $revisionable_fields = ['label', 'status', 'changed'];
+  foreach ($revisionable_fields as $field_name) {
     if (isset($field_storage_definitions[$field_name])) {
       $field_storage_definitions[$field_name]->setRevisionable(TRUE);
     }
   }
 
-  // 5. Run the update.
-  // Now that 'uid' exists in the 'ounit' table with a value of 0,
-  // the INSERT INTO tmp_... will find a 0 instead of NULL.
+  // 5. Run the Schema Conversion.
+  // The manager will now use the initial value '0' for the 'uid' column during migration.
   $update_manager->updateFieldableEntityType($entity_type, $field_storage_definitions, $sandbox);
 
-  return t('Ounit converted to revisionable.');
+  \Drupal::logger('ewp_ounits')->notice(t('Schema conversion to revisionable ran successfully'));
+
+  $database = \Drupal::database();
+  // 1. Update the revision table metadata.
+  // We copy the 'changed' time from the base table into the revision table
+  // so the UI has a valid numeric timestamp to display.
+  $query = $database->query("
+    UPDATE {ounit_revision} r
+    INNER JOIN {ounit} b ON r.id = b.id
+    SET r.revision_timestamp = b.changed
+    WHERE r.revision_timestamp IS NULL OR r.revision_timestamp = 0
+  ");
+
+  // 2. Also ensure the revision_uid is set to something valid (like the owner).
+  $database->query("
+    UPDATE {ounit_revision} r
+    INNER JOIN {ounit} b ON r.id = b.id
+    SET r.revision_uid = b.uid
+    WHERE r.revision_uid IS NULL
+  ");
+
+  \Drupal::logger('ewp_ounits')->notice(t('Ounit revision metadata (timestamps and UIDs) has been synchronized.'));
 }
