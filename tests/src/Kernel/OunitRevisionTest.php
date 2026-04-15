@@ -22,9 +22,9 @@ final class OunitRevisionTest extends OunitKernelTestBase {
           'lang' => 'de',
         ],
       ],
-      'parent_hei' => 2,
+      'parent_hei' => 1,
       'abbreviation' => 'OU THREE modified',
-      'parent_ounit' => 2,
+      'parent_ounit' => 1,
       'mailing_address' => [
         'recipient_name' => 'OU THREE modified',
         'country' => 'HU',
