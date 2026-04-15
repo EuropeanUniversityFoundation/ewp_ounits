@@ -136,7 +136,7 @@ class Ounit extends RevisionableContentEntityBase implements OunitInterface {
   /**
    * Returns Anonymous as default owner.
    */
-  public function getDefaultEntityOwner() {
+  public static function getDefaultEntityOwner() {
     return 0;
   }
 
