@@ -143,6 +143,72 @@ abstract class OunitKernelTestBase extends EntityKernelTestBase {
   ];
 
   /**
+   * Original OUnit entity.
+   *
+   * @var \Drupal\ewp_ounits\Entity\OunitInterface
+   */
+  protected $originalOunit;
+
+  /**
+   * Original OUnit entity data.
+   *
+   * @var array
+   */
+  protected $originalOunitData = [
+    'id' => 3,
+    'type' => 'ounit',
+    'status' => 1,
+    'label' => 'Original OUnit',
+    'ounit_code' => 'OU3',
+    'ounit_id' => '11223344-5566-7788-9900-aabbccddeeaa',
+    'name' => [
+      [
+        'string' => 'Original OUnit',
+        'lang' => 'de',
+      ],
+    ],
+    'parent_hei' => 2,
+    'abbreviation' => 'OU THREE',
+    'parent_ounit' => 2,
+    'mailing_address' => [
+      'recipient_name' => 'OU THREE',
+      'country' => 'DE',
+        'address_line_1' => null,
+        'address_line_2' => null,
+        'address_line_3' => null,
+        'address_line_4' => null,
+        'building_number' => null,
+        'building_name' => null,
+        'street_name' => null,
+        'unit' => null,
+        'floor' => null,
+        'post_office_box' => null,
+        'delivery_point_code' => null,
+        'postal_code' => null,
+        'locality' => null,
+        'region' => null,
+    ],
+    'website_url' => [
+      'uri' => 'https://example.com/OU3',
+      'title' => 'OU3 webspage',
+      'options' => [],
+      'lang' => 'en',
+    ],
+    'mobility_factsheet_url' => [
+      'uri' => 'https://example.com/OU3/mfs',
+      'title' => 'OU3 mobility factsheet',
+      'options' => [],
+      'lang' => 'en',
+    ],
+    'logo_url' => [
+      'uri' => 'https://example.com/OU3/logo',
+      'title' => 'OU3 logo',
+      'options' => [],
+      'lang' => 'en',
+    ],
+  ];
+
+  /**
    * User entity with required permissions.
    *
    * @var \Drupal\user\UserInterface
@@ -189,6 +255,11 @@ abstract class OunitKernelTestBase extends EntityKernelTestBase {
     /** @var \Drupal\ewp_ounits\Entity\OunitInterface $newOunit */
     $this->newOunit = $newOunit;
     $this->newOunit->save();
+
+    $originalOunit = $ounitStorage->create($this->originalOunitData);
+    /** @var \Drupal\ewp_ounits\Entity\OunitInterface $newOunit */
+    $this->originalOunit = $originalOunit;
+    $this->originalOunit->save();
 
     $this->userWithPermissions = $this->createUser([
       'view published institution entities',
