@@ -139,4 +139,26 @@ function ewp_ounits_update_10603(&$sandbox) {
   ");
 
   \Drupal::logger('ewp_ounits')->notice(t('Ounit revision metadata (timestamps and UIDs) has been synchronized.'));
+
+  // Deleting backup tables created by Drupal.
+  _ewp_cleanup_backup_tables('ounit');
+
+  \Drupal::logger('ewp_ounits')->notice(t('Backup tables removed after successful conversion.'));
+}
+
+/**
+ * Clean up backup tables created by the ounit schema conversion.
+ */
+function _ewp_cleanup_backup_tables(string $entity_type_id) {
+  $schema = \Drupal::database()->schema();
+
+  // Find all tables that look like backups for this entity type.
+  // The pattern matches "old_" + 6 random chars + our table name.
+  $tables = $schema->findTables('old_______' . $entity_type_id . '%');
+
+  foreach ($tables as $table) {
+    if ($schema->tableExists($table)) {
+      $schema->dropTable($table);
+    }
+  }
 }
