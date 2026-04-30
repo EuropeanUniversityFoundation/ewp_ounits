@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint as SymfonyConstraint;
 final class ParentOunitInstitutionConstraint extends SymfonyConstraint {
 
   /**
-   * The error message if the Parent OUnit does not reference the same Institution.
+   * Error message for the Parent OUnit not referencing the same Institution.
    *
    * @var string
    */

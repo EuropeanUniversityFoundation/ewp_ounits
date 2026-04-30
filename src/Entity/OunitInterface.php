@@ -5,13 +5,14 @@ namespace Drupal\ewp_ounits\Entity;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
+use Drupal\user\EntityOwnerInterface;
 
 /**
  * Provides an interface for defining Organizational Unit entities.
  *
  * @ingroup ewp_ounits
  */
-interface OunitInterface extends ContentEntityInterface, EntityChangedInterface, EntityPublishedInterface {
+interface OunitInterface extends ContentEntityInterface, EntityOwnerInterface, EntityChangedInterface, EntityPublishedInterface {
 
   /**
    * Add get/set methods for your configuration properties here.

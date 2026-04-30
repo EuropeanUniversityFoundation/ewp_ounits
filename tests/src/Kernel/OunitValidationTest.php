@@ -12,13 +12,6 @@ namespace Drupal\Tests\ewp_ounits\Kernel;
 final class OunitValidationTest extends OunitKernelTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected function setUp(): void {
-    parent::setUp();
-  }
-
-  /**
    * Test OUnit entity validation.
    */
   public function testOunitValidation(): void {
