@@ -209,6 +209,7 @@ class Ounit extends RevisionableContentEntityBase implements OunitInterface {
         'label' => 'above',
         'type' => 'author',
         'weight' => 15,
+        'region' => 'hidden',
       ])
       ->setDisplayConfigurable('view', TRUE);
 
