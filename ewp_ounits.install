@@ -147,7 +147,7 @@ function ewp_ounits_update_10603(&$sandbox) {
 }
 
 /**
- * Clean up backup tables created schema conversion.
+ * Clean up backup tables created by schema conversion.
  */
 function _ewp_cleanup_backup_tables(string $entity_type_id) {
   $schema = \Drupal::database()->schema();
